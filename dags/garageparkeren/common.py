@@ -34,9 +34,6 @@ def generate_job(
             template=client.V1PodTemplateSpec(
                 spec=client.V1PodSpec(
                     restart_policy="Never",
-                    image_pull_secrets=[
-                        client.V1LocalObjectReference(name="spark-jobs-read-registry")
-                    ],
                     automount_service_account_token=False,
                     volumes=[
                         client.V1Volume(
@@ -59,80 +56,6 @@ def generate_job(
                             image_pull_policy="Always",
                             command=["python3", job_script_path, source_system],
                             env=[
-                                client.V1EnvVar(
-                                    name="POSTGRES_USER",
-                                    value_from=client.V1EnvVarSource(
-                                        secret_key_ref=client.V1SecretKeySelector(
-                                            name="garageparkeren-database",
-                                            key="username",
-                                        )
-                                    ),
-                                ),
-                                client.V1EnvVar(
-                                    name="POSTGRES_PASSWORD",
-                                    value_from=client.V1EnvVarSource(
-                                        secret_key_ref=client.V1SecretKeySelector(
-                                            name="garageparkeren-database",
-                                            key="password",
-                                        )
-                                    ),
-                                ),
-                                client.V1EnvVar(
-                                    name="AWS_ACCESS_KEY_ID",
-                                    value_from=client.V1EnvVarSource(
-                                        secret_key_ref=client.V1SecretKeySelector(
-                                            name="garageparkerenraw-minio",
-                                            key="accesskey",
-                                        )
-                                    ),
-                                ),
-                                client.V1EnvVar(
-                                    name="AWS_SECRET_ACCESS_KEY",
-                                    value_from=client.V1EnvVarSource(
-                                        secret_key_ref=client.V1SecretKeySelector(
-                                            name="garageparkerenraw-minio",
-                                            key="secretkey",
-                                        )
-                                    ),
-                                ),
-                                client.V1EnvVar(
-                                    name="MINIO_ACCESS_KEY",
-                                    value_from=client.V1EnvVarSource(
-                                        secret_key_ref=client.V1SecretKeySelector(
-                                            name="garageparkerenraw-minio",
-                                            key="accesskey",
-                                        )
-                                    ),
-                                ),
-                                client.V1EnvVar(
-                                    name="MINIO_SECRET_KEY",
-                                    value_from=client.V1EnvVarSource(
-                                        secret_key_ref=client.V1SecretKeySelector(
-                                            name="garageparkerenraw-minio",
-                                            key="secretkey",
-                                        )
-                                    ),
-                                ),
-                                client.V1EnvVar(
-                                    name="MINIO_ENDPOINT", value="minio.minio:9000"
-                                ),
-                                client.V1EnvVar(name="MINIO_SECURE", value="0"),
-                                client.V1EnvVar(
-                                    name="SPARK_PUBLIC_DNS",
-                                    value_from=client.V1EnvVarSource(
-                                        field_ref=client.V1ObjectFieldSelector(
-                                            field_path="status.podIP"
-                                        )
-                                    ),
-                                ),
-                                client.V1EnvVar(
-                                    name="SPARK_LOCAL_HOSTNAME",
-                                    value_from=client.V1EnvVarSource(
-                                        field_ref=client.V1ObjectFieldSelector(
-                                            field_path="status.podIP"
-                                        )
-                                    ),
-                                ),
                                 client.V1EnvVar(
                                     name="SPARK_DRIVER_CORES",
                                     value=str(spark_driver_cores),

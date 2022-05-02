@@ -57,10 +57,10 @@ with DAG(
         image=IMAGE,
         job_script_path="/app/src/spark_test.py",
         spark_driver_cores=1,
-        spark_driver_memory_gb=8,
-        spark_executor_cores=2,
-        spark_executor_memory_gb=8,
-        spark_executor_instances=3,
+        spark_driver_memory_gb=1,
+        spark_executor_cores=1,
+        spark_executor_memory_gb=1,
+        spark_executor_instances=1,
         # Source sytem is nodig voor to datamart jobs
         source_system="ski3",
     )

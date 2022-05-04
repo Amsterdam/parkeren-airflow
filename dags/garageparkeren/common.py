@@ -94,13 +94,13 @@ def generate_job(
                                     memory=f"{kubernetes_memory_mb}M",
                                 ),
                             ),
-                            volume_mounts=[
-                                client.V1VolumeMount(
-                                    name="spark-defaults",
-                                    sub_path="spark-defaults.conf",
-                                    mount_path="/opt/spark/conf/spark-defaults.conf",
-                                )
-                            ],
+                            # volume_mounts=[
+                            #     client.V1VolumeMount(
+                            #         name="spark-defaults",
+                            #         sub_path="spark-defaults.conf",
+                            #         mount_path="/opt/spark/conf/spark-defaults.conf",
+                            #     )
+                            # ],
                         )
                     ],
                 )

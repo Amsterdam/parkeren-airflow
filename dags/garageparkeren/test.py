@@ -60,7 +60,7 @@ with DAG(
         spark_driver_memory_gb=1,
         spark_executor_cores=1,
         spark_executor_memory_gb=1,
-        spark_executor_instances=1,
+        spark_executor_instances=2,
         # Source sytem is nodig voor to datamart jobs
         source_system="ski3",
     )

@@ -62,6 +62,11 @@ def generate_job(
                                                                      .V1ObjectFieldSelector(field_path="status.podIP")),
                                 ),
                                 client.V1EnvVar(
+                                    name="SPARK_LOCAL_IP",
+                                    value_from=client.V1EnvVarSource(field_ref=client
+                                                                     .V1ObjectFieldSelector(field_path="status.podIP")),
+                                ),
+                                client.V1EnvVar(
                                     name="SPARK_DRIVER_CORES",
                                     value=str(spark_driver_cores),
                                 ),

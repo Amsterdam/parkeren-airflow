@@ -6,7 +6,7 @@ from operators.kubernetes import JobOperator, JobSensor, BaseOperator
 
 KUBERNETES_MEMORY_OVERHEAD_FACTOR = 0.1
 NAMESPACE = "airflow-mobibbn1"
-IMAGE = "parkerenweuacrow77kin67.azurecr.io/parkeren-spark:latest"
+IMAGE = "parkerenweuacrow77kin67.azurecr.io/parkeren-spark:thomas"
 MAX_JOB_NAME_LENGTH = 63
 
 
@@ -35,20 +35,20 @@ def generate_job(
                 spec=client.V1PodSpec(
                     restart_policy="Never",
                     automount_service_account_token=False,
-                    volumes=[
-                        client.V1Volume(
-                            name="spark-defaults",
-                            config_map=client.V1ConfigMapVolumeSource(
-                                default_mode=420,
-                                name="spark-defaults",
-                                items=[
-                                    client.V1KeyToPath(
-                                        key="spark-defaults", path="spark-defaults.conf"
-                                    )
-                                ],
-                            ),
-                        )
-                    ],
+                    # volumes=[
+                    #     client.V1Volume(
+                    #         name="spark-defaults",
+                    #         config_map=client.V1ConfigMapVolumeSource(
+                    #             default_mode=420,
+                    #             name="spark-defaults",
+                    #             items=[
+                    #                 client.V1KeyToPath(
+                    #                     key="spark-defaults", path="spark-defaults.conf"
+                    #                 )
+                    #             ],
+                    #         ),
+                    #     )
+                    # ],
                     containers=[
                         client.V1Container(
                             name="driver",

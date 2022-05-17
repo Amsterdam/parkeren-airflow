@@ -55,7 +55,7 @@ with DAG(
         ),
         namespace=NAMESPACE,
         image=IMAGE,
-        job_script_path="/app/src/spark_test.py",
+        job_script_path="/app/src/spark_test_dadi.py",
         spark_driver_cores=1,
         spark_driver_memory_gb=1,
         spark_executor_cores=1,
@@ -65,7 +65,7 @@ with DAG(
         source_system="ski3",
     )
 
-    run_test_job = JobOperator(job=test_job, task_id="run-test-spark-job-thomas")
+    run_test_job = JobOperator(job=test_job, task_id="run-test-spark-job-thomas2")
 
     watch_test_job: BaseOperator = JobSensor(
         job_name=test_job.metadata.name,

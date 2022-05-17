@@ -55,7 +55,7 @@ with DAG(
         ),
         namespace=NAMESPACE,
         image=IMAGE,
-        job_script_path="/app/src/spark_test.py",
+        job_script_path="/app/src/spark_test_dadi.py",
         spark_driver_cores=1,
         spark_driver_memory_gb=1,
         spark_executor_cores=1,

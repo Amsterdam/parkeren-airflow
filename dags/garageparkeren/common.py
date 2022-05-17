@@ -34,7 +34,7 @@ def generate_job(
             template=client.V1PodTemplateSpec(
                 spec=client.V1PodSpec(
                     restart_policy="Never",
-                    automount_service_account_token=False,
+                    service_account_name="spark",
                     # volumes=[
                     #     client.V1Volume(
                     #         name="spark-defaults",

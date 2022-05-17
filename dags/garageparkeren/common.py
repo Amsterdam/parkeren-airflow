@@ -57,6 +57,11 @@ def generate_job(
                             command=["python3", job_script_path, source_system],
                             env=[
                                 client.V1EnvVar(
+                                    name="SPARK_DRIVER_BIND_ADDRESS",
+                                    value_from=client.V1EnvVarSource(field_ref=client
+                                                                     .V1ObjectFieldSelector(field_path="status.podIP")),
+                                ),
+                                client.V1EnvVar(
                                     name="SPARK_DRIVER_CORES",
                                     value=str(spark_driver_cores),
                                 ),

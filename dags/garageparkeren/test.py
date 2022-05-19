@@ -49,28 +49,30 @@ with DAG(
     #     source_system="ski3",
     # ),
 
-    test_job = generate_job(
-        job_name=f"test-spark-job-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip(
-            "-"
-        ),
-        namespace=NAMESPACE,
-        image=IMAGE,
-        job_script_path="/app/src/spark_test_dadi.py",
-        spark_driver_cores=1,
-        spark_driver_memory_gb=1,
-        spark_executor_cores=1,
-        spark_executor_memory_gb=1,
-        spark_executor_instances=2,
-        # Source sytem is nodig voor to datamart jobs
-        source_system="ski3",
-    )
+    jobs = ["1", "2", "3", "4"]
 
-    run_test_job = JobOperator(job=test_job, task_id="run-test-spark-job-thomas777")
+    for job in jobs:
+        test_job = generate_job(
+            job_name=f"{job}test-spark-job-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip(
+                "-"
+            ),
+            namespace=NAMESPACE,
+            image=IMAGE,
+            job_script_path="/app/src/spark_test_dadi.py",
+            spark_driver_cores=1,
+            spark_driver_memory_gb=1,
+            spark_executor_cores=2,
+            spark_executor_memory_gb=1,
+            spark_executor_instances=2,
+            # Source sytem is nodig voor to datamart jobs
+            source_system="ski3",
+        )
 
-    watch_test_job: BaseOperator = JobSensor(
-        job_name=test_job.metadata.name,
-        task_id="watch-test-spark-job",
-        namespace=NAMESPACE,
-    )
+        run_test_job = JobOperator(job=test_job, task_id=f"run-test-spark-job-thomas-{job}")
 
-    start >> run_test_job >> watch_test_job
+        watch_test_job: BaseOperator = JobSensor(
+            job_name=test_job.metadata.name,
+            task_id=f"watch-test-spark-job-{job}",
+            namespace=NAMESPACE,
+        )
+        start >> run_test_job >> watch_test_job

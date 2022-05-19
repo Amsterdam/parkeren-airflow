@@ -27,10 +27,11 @@ def generate_job(
         ((1 + KUBERNETES_MEMORY_OVERHEAD_FACTOR) * 1000) * spark_driver_memory_gb
     )
     return client.V1Job(
-        metadata=client.V1ObjectMeta(name=job_name, namespace=namespace),
+        metadata=client.V1ObjectMeta(name=job_name, namespace=namespace, labels={"job_type": "spark"}),
         spec=client.V1JobSpec(
             backoff_limit=3,
             active_deadline_seconds=57600,
+            ttl_seconds_after_finished=10,
             template=client.V1PodTemplateSpec(
                 spec=client.V1PodSpec(
                     restart_policy="Never",

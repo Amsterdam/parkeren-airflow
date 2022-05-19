@@ -49,11 +49,9 @@ with DAG(
     #     source_system="ski3",
     # ),
 
-    jobs = ["1", "2", "3", "4"]
-
-    for job in jobs:
+    for job in range(50):
         test_job = generate_job(
-            job_name=f"{job}test-spark-job-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip(
+            job_name=f"test-spark-job-{job}-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip(
                 "-"
             ),
             namespace=NAMESPACE,

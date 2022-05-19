@@ -31,7 +31,7 @@ def generate_job(
         spec=client.V1JobSpec(
             backoff_limit=3,
             active_deadline_seconds=57600,
-            ttl_seconds_after_finished=10,
+            ttl_seconds_after_finished=60 * 60 * 24 * 5,
             template=client.V1PodTemplateSpec(
                 spec=client.V1PodSpec(
                     restart_policy="Never",

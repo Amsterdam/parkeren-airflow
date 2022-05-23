@@ -27,7 +27,8 @@ def generate_job(
         ((1 + KUBERNETES_MEMORY_OVERHEAD_FACTOR) * 1000) * spark_driver_memory_gb
     )
     return client.V1Job(
-        metadata=client.V1ObjectMeta(name=job_name, namespace=namespace, labels={"job_type": "spark"}),
+        metadata=client.V1ObjectMeta(name=job_name, namespace=namespace, labels={"job_type": "spark",
+                                                                                 "aadpodidbinding": "airflow-identity"}),
         spec=client.V1JobSpec(
             backoff_limit=3,
             active_deadline_seconds=57600,
@@ -43,7 +44,7 @@ def generate_job(
                     #         config_map=client.V1ConfigMapVolumeSource(
                     #             default_mode=420,
                     #             name="spark-defaults",
-                    #             items=[
+                    #             items=["
                     #                 client.V1KeyToPath(
                     #                     key="spark-defaults", path="spark-defaults.conf"
                     #                 )

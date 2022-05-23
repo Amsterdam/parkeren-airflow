@@ -36,7 +36,7 @@ def generate_job(
                 spec=client.V1PodSpec(
                     restart_policy="Never",
                     service_account_name="spark",
-                    node_selector='nodetype=mobibbn1work',
+                    node_selector={"nodetype": "mobibbn1work"},
                     # volumes=[
                     #     client.V1Volume(
                     #         name="spark-defaults",

@@ -53,7 +53,7 @@ with DAG(
         task_id="slack_at_start",
     )
 
-    for job in range(5):
+    for job in range(1):
         test_job = generate_job(
             job_name=f"test-spark-job-{job}-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip(
                 "-"
@@ -63,8 +63,8 @@ with DAG(
             job_script_path="/app/src/spark_thomas.py",
             spark_driver_cores=1,
             spark_driver_memory_gb=1,
-            spark_executor_cores=8,
-            spark_executor_memory_gb=4,
+            spark_executor_cores=2,
+            spark_executor_memory_gb=2,
             spark_executor_instances=2,
             # Source sytem is nodig voor to datamart jobs
             source_system="ski3",

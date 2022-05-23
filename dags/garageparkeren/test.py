@@ -53,7 +53,7 @@ with DAG(
         task_id="slack_at_start",
     )
 
-    for job in range(1):
+    for job in range(5):
         test_job = generate_job(
             job_name=f"test-spark-job-{job}-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip(
                 "-"
@@ -70,7 +70,7 @@ with DAG(
             source_system="ski3",
         )
 
-        run_test_job = JobOperator(job=test_job, task_id=f"run-test-spark-job-thomas123-{job}")
+        run_test_job = JobOperator(job=test_job, task_id=f"run-test-spark-job-thomas-{job}")
 
         watch_test_job: BaseOperator = JobSensor(
             job_name=test_job.metadata.name,

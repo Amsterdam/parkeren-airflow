@@ -31,11 +31,12 @@ def generate_job(
         spec=client.V1JobSpec(
             backoff_limit=3,
             active_deadline_seconds=57600,
-            ttl_seconds_after_finished=60 * 60 * 24 * 5,
+            ttl_seconds_after_finished=60,
             template=client.V1PodTemplateSpec(
                 spec=client.V1PodSpec(
                     restart_policy="Never",
                     service_account_name="spark",
+                    node_selector='nodetype=mobibbn1work',
                     # volumes=[
                     #     client.V1Volume(
                     #         name="spark-defaults",

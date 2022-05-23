@@ -70,7 +70,7 @@ with DAG(
             source_system="ski3",
         )
 
-        run_test_job = JobOperator(job=test_job, task_id=f"run-test-spark-job-thomas123-{job}")
+        run_test_job = JobOperator(job=test_job, task_id=f"run-test-spark-job-thomas-{job}")
 
         watch_test_job: BaseOperator = JobSensor(
             job_name=test_job.metadata.name,

@@ -34,6 +34,7 @@ def generate_job(
             active_deadline_seconds=57600,
             ttl_seconds_after_finished=60,
             template=client.V1PodTemplateSpec(
+                metadata=client.V1ObjectMeta(labels={"aadpodidbinding": "airflow-identity"}),
                 spec=client.V1PodSpec(
                     restart_policy="Never",
                     service_account_name="spark",

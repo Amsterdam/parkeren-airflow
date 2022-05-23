@@ -73,6 +73,14 @@ def generate_job(
                                                                      .V1ObjectFieldSelector(field_path="status.podIP"))
                                 ),
                                 client.V1EnvVar(
+                                    name="IMAGE",
+                                    value=str(image),
+                                ),
+                                client.V1EnvVar(
+                                    name="NAMESPACE",
+                                    value=str(namespace),
+                                ),
+                                client.V1EnvVar(
                                     name="SPARK_DRIVER_CORES",
                                     value=str(spark_driver_cores),
                                 ),

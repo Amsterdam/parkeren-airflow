@@ -22,7 +22,7 @@ ARGS = {
     "retry_delay": timedelta(minutes=15),
 }
 
-DAG_ID = "garageparkeren-test"
+DAG_ID = "garageparkeren-test-wout"
 
 INTERVAL = None
 # INTERVAL = timedelta(hours=1)

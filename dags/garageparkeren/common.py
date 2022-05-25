@@ -25,7 +25,7 @@ def generate_job(
     arguments: List[str] = None,
 ) -> client.V1Job:
     if arguments is None:
-        arguments = ()
+        arguments = []
 
     kubernetes_memory_mb = int(
         ((1 + KUBERNETES_MEMORY_OVERHEAD_FACTOR) * 1000) * spark_driver_memory_gb

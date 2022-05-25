@@ -156,9 +156,10 @@ with DAG(
             spark_executor_cores=2,
             spark_executor_memory_gb=2,
             spark_executor_instances=2,
+            arguments=arguments[source_system_job]
         )
 
-        run_test_job = JobOperator(job=test_job, task_id=f"run-migrate-spark-job-{source_system_job}")
+        run_test_job = JobOperator(job=test_job, task_id=f"run-migrate-spark-job123-{source_system_job}")
 
         watch_test_job: BaseOperator = JobSensor(
             job_name=test_job.metadata.name,

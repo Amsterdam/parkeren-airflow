@@ -39,12 +39,12 @@ with DAG(
     start = DummyOperator(task_id="start", dag=dag)
 
     source_systems_jobs = [
-        "ipp1",
+        # "ipp1",
         "scn1",
-        "ski1",
-        "ski2",
-        "ski3",
-        "snb1"
+        # "ski1",
+        # "ski2",
+        # "ski3",
+        # "snb1"
     ]
 
     arguments = {
@@ -159,7 +159,7 @@ with DAG(
             arguments=arguments[source_system_job]
         )
 
-        run_test_job = JobOperator(job=test_job, task_id=f"run-migrate-spark-job123-{source_system_job}")
+        run_test_job = JobOperator(job=test_job, task_id=f"run-migrate-spark-job-{source_system_job}")
 
         watch_test_job: BaseOperator = JobSensor(
             job_name=test_job.metadata.name,

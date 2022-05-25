@@ -39,12 +39,12 @@ with DAG(
     start = DummyOperator(task_id="start", dag=dag)
 
     source_systems_jobs = [
-        # "ipp1",
+        "ipp1",
         "scn1",
-        # "ski1",
-        # "ski2",
-        # "ski3",
-        # "snb1"
+        "ski1",
+        "ski2",
+        "ski3",
+        "snb1"
     ]
 
     arguments = {
@@ -149,8 +149,7 @@ with DAG(
             ),
             namespace=NAMESPACE,
             image=IMAGE,
-            # job_script_path=f"/app/src/jobs/migration/{source_system_job}/migrate.py",
-            job_script_path="/app/src/spark_thomas.py",
+            job_script_path=f"/app/src/jobs/migration/{source_system_job}/migrate.py",
             spark_driver_cores=1,
             spark_driver_memory_gb=1,
             spark_executor_cores=2,

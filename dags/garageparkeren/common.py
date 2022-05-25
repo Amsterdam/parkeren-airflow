@@ -22,7 +22,7 @@ def generate_job(
     spark_executor_memory_gb: int = 1,
     spark_executor_instances: int = 1,
     #     TODO change naming
-    arguments: List[str] = (),
+    arguments: List[str] = field(default_factory=list),
 ) -> client.V1Job:
     kubernetes_memory_mb = int(
         ((1 + KUBERNETES_MEMORY_OVERHEAD_FACTOR) * 1000) * spark_driver_memory_gb
@@ -147,7 +147,7 @@ class SparkJob:
     python_path: str
     spark_driver_cores: int = 1
     spark_executor_cores: int = 1
-    arguments: List[str] = ()
+    arguments: List[str] = field(default_factory=list)
 
 
 def add_job_to_node(

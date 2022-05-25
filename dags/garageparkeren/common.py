@@ -84,6 +84,10 @@ def generate_job(
                                     value=str(image),
                                 ),
                                 client.V1EnvVar(
+                                    name="PYTHONPATH",
+                                    value=str("/app"),
+                                ),
+                                client.V1EnvVar(
                                     name="NAMESPACE",
                                     value=str(namespace),
                                 ),

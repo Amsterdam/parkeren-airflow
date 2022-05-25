@@ -139,8 +139,8 @@ with DAG(
             "Value_card_transactions"
         ],
         "ski3": [
-            "Articles", ",
-                        "Automatic_payment_machine_levels",
+            "Articles",
+            "Automatic_payment_machine_levels",
             "Automatic_payment_machine_transactions",
             "Car_park_counting",
             "Car_parks",
@@ -187,8 +187,7 @@ with DAG(
             "Validation_providers",
             "Validation_transactions",
             "Value_added_tax",
-            "Value_card_transactions",
-
+            "Value_card_transactions"
         ],
         "snb1": []
     }

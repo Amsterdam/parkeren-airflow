@@ -48,7 +48,7 @@ with DAG(
             NAMESPACE,
             IMAGE,
             "/app/src/jobs/staging_to_historic/historic_dedupe.py",
-            source_system=source_system,
+            arguments=[source_system],
         )
 
         run_historic_dedupe = JobOperator(
@@ -69,7 +69,7 @@ with DAG(
             NAMESPACE,
             IMAGE,
             "/app/src/jobs/staging_to_historic/historic_dedupe_copy.py",
-            source_system=source_system,
+            arguments=[source_system],
         )
 
         run_dedupe_copy = JobOperator(

@@ -1,5 +1,6 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from random import uniform
+from typing import List
 
 from kubernetes import client
 from operators.kubernetes import JobOperator, JobSensor, BaseOperator
@@ -21,7 +22,7 @@ def generate_job(
     spark_executor_memory_gb: int = 1,
     spark_executor_instances: int = 1,
     #     TODO change naming
-    source_system: str = "",
+    arguments: List[str] = (),
 ) -> client.V1Job:
     kubernetes_memory_mb = int(
         ((1 + KUBERNETES_MEMORY_OVERHEAD_FACTOR) * 1000) * spark_driver_memory_gb
@@ -58,7 +59,7 @@ def generate_job(
                             name="driver",
                             image=image,
                             image_pull_policy="Always",
-                            command=["python3", job_script_path, source_system],
+                            command=["python3", job_script_path] + arguments,
                             env=[
                                 client.V1EnvVar(
                                     name="POD_NAME",
@@ -146,7 +147,7 @@ class SparkJob:
     python_path: str
     spark_driver_cores: int = 1
     spark_executor_cores: int = 1
-    source_system: str = ""
+    arguments: List[str] = ()
 
 
 def add_job_to_node(
@@ -167,7 +168,7 @@ def add_job_to_node(
         spark_driver_cores=spark_job.spark_driver_cores,
         spark_executor_cores=spark_job.spark_executor_cores,
         # TODO change naming
-        source_system=spark_job.source_system,
+        arguments=spark_job.arguments,
     )
     # TODO change naming
     run_his_to_int = JobOperator(job=his_to_int, task_id=f"run-{job_name}")

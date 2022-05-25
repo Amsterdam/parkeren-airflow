@@ -66,8 +66,6 @@ with DAG(
             spark_executor_cores=2,
             spark_executor_memory_gb=2,
             spark_executor_instances=2,
-            # Source sytem is nodig voor to datamart jobs
-            source_system="ski3",
         )
 
         run_test_job = JobOperator(job=test_job, task_id=f"run-test-spark-job-thomas-{job}")

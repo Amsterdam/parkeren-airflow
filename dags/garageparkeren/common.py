@@ -74,6 +74,33 @@ def generate_job(
                                     ),
                                 ),
                                 client.V1EnvVar(
+                                    name="SA_DATA_PARKEREN_SAS",
+                                    value_from=client.V1EnvVarSource(
+                                        secret_key_ref=client.V1SecretKeySelector(
+                                            name="data-storage-sas",
+                                            key="SA_DATA_PARKEREN_SAS",
+                                        )
+                                    ),
+                                ),
+                                client.V1EnvVar(
+                                    name="DADI_DATA_STORAGE_NAME",
+                                    value_from=client.V1EnvVarSource(
+                                        secret_key_ref=client.V1SecretKeySelector(
+                                            name="dadi-data-storage-name",
+                                            key="DADI_DATA_STORAGE_NAME",
+                                        )
+                                    ),
+                                ),
+                                client.V1EnvVar(
+                                    name="MID_AIRFLOW_MOBIBBN1",
+                                    value_from=client.V1EnvVarSource(
+                                        secret_key_ref=client.V1SecretKeySelector(
+                                            name="mid-airflow-mobibbn1",
+                                            key="MID_AIRFLOW_MOBIBBN1",
+                                        )
+                                    ),
+                                ),
+                                client.V1EnvVar(
                                     name="POD_NAME",
                                     value_from=client.V1EnvVarSource(field_ref=client
                                                                      .V1ObjectFieldSelector(field_path="metadata.name"))

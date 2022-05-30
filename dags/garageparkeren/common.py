@@ -65,6 +65,15 @@ def generate_job(
                             command=["python3", job_script_path] + arguments,
                             env=[
                                 client.V1EnvVar(
+                                    name="SA_DATA_PARKEREN",
+                                    value_from=client.V1EnvVarSource(
+                                        secret_key_ref=client.V1SecretKeySelector(
+                                            name="data-storage-name",
+                                            key="SA_DATA_PARKEREN",
+                                        )
+                                    ),
+                                ),
+                                client.V1EnvVar(
                                     name="POD_NAME",
                                     value_from=client.V1EnvVarSource(field_ref=client
                                                                      .V1ObjectFieldSelector(field_path="metadata.name"))

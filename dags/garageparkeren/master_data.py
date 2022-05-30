@@ -42,26 +42,25 @@ with DAG(
         task_id="slack_at_start",
     )
 
-    for job in range(1):
-        master_data_job = generate_job(
-            job_name=f"master-data-spark-job-{job}-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip(
-                "-"
-            ),
-            namespace=NAMESPACE,
-            image=IMAGE,
-            job_script_path="/app/src/jobs/master_data/run_all_master.py",
-            spark_driver_cores=1,
-            spark_driver_memory_gb=1,
-            spark_executor_cores=2,
-            spark_executor_memory_gb=2,
-            spark_executor_instances=2,
-        )
+    master_data_job = generate_job(
+        job_name=f"master-data-spark-job-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip(
+            "-"
+        ),
+        namespace=NAMESPACE,
+        image=IMAGE,
+        job_script_path="/app/src/jobs/master_data/run_all_master.py",
+        spark_driver_cores=1,
+        spark_driver_memory_gb=1,
+        spark_executor_cores=2,
+        spark_executor_memory_gb=2,
+        spark_executor_instances=2,
+    )
 
-        run_master_data_job = JobOperator(job=master_data_job, task_id=f"run-master-data-spark-job-thomas-{job}")
+    run_master_data_job = JobOperator(job=master_data_job, task_id=f"run-master-data-spark-job-thomas")
 
-        watch_master_data_job: BaseOperator = JobSensor(
-            job_name=master_data_job.metadata.name,
-            task_id=f"watch-master-data-spark-job-{job}",
-            namespace=NAMESPACE,
-        )
-        slack_at_start >> start >> run_master_data_job >> watch_master_data_job
+    watch_master_data_job: BaseOperator = JobSensor(
+        job_name=master_data_job.metadata.name,
+        task_id=f"watch-master-data-spark-job",
+        namespace=NAMESPACE,
+    )
+    slack_at_start >> start >> run_master_data_job >> watch_master_data_job

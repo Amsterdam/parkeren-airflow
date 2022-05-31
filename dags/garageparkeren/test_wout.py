@@ -59,8 +59,8 @@ with DAG(
                 "-"
             ),
             namespace=NAMESPACE,
-            image="parkerenweuacrow77kin67.azurecr.io/parkeren-spark:dewout",
-            job_script_path="/app/src/spark_thomas.py",
+            image="parkerenweuacrow77kin67.azurecr.io/parkeren-spark:wout",
+            job_script_path="/app/src/master_data/master_garage.py",
             spark_driver_cores=1,
             spark_driver_memory_gb=1,
             spark_executor_cores=2,
@@ -68,7 +68,7 @@ with DAG(
             spark_executor_instances=2,
         )
 
-        run_test_job = JobOperator(job=test_job, task_id=f"run-test-spark-job-thomas-{job}")
+        run_test_job = JobOperator(job=test_job, task_id=f"run-test-spark-job-wout-{job}")
 
         watch_test_job: BaseOperator = JobSensor(
             job_name=test_job.metadata.name,

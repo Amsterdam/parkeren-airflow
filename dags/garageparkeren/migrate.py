@@ -48,7 +48,22 @@ with DAG(
     ]
 
     arguments = {
-        "ipp1": [],
+        "ipp1": [
+            "CashierAction",
+            "CityPassTransaction",
+            "ExcessiveParkingTime",
+            "Invoice",
+            "Occupation",
+            "ParkingTransaction",
+            "Payment",
+            "Reduction",
+            "SubscriptionModelOccupation",
+            "SubscriptionModelOccupationCorrection",
+            "TerminalLog",
+            "TerminalRequestException",
+            "vwCounterCorrection",
+            "vwCounterSample",
+        ],
         "scn1": [
             "Abonnementen",
             "Betaling",
@@ -189,7 +204,19 @@ with DAG(
             "Value_added_tax",
             "Value_card_transactions"
         ],
-        "snb1": []
+        "snb1": [
+            "ADDR_G",
+            "AUSLAST",
+            "GEOMETRY_L",
+            "INVTRANSDATA",
+            "LOGGCARD",
+            "LOGGVORGANG",
+            "PTCPTADMIN_G",
+            "PTCPT_G",
+            "RECHNUNG",
+            "TMOVEMENT",
+            "TSHIFT",
+        ]
     }
 
     for source_system_job in source_systems_jobs:

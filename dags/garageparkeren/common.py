@@ -101,6 +101,24 @@ def generate_job(
                                     ),
                                 ),
                                 client.V1EnvVar(
+                                    name="SA_STATUS_PARKEREN",
+                                    value_from=client.V1EnvVarSource(
+                                        secret_key_ref=client.V1SecretKeySelector(
+                                            name="status-storage-name",
+                                            key="SA_STATUS_PARKEREN",
+                                        )
+                                    ),
+                                ),
+                                client.V1EnvVar(
+                                    name="SA_STATUS_PARKEREN_SAS",
+                                    value_from=client.V1EnvVarSource(
+                                        secret_key_ref=client.V1SecretKeySelector(
+                                            name="status-storage-sas",
+                                            key="SA_STATUS_PARKEREN_SAS",
+                                        )
+                                    ),
+                                ),
+                                client.V1EnvVar(
                                     name="POD_NAME",
                                     value_from=client.V1EnvVarSource(field_ref=client
                                                                      .V1ObjectFieldSelector(field_path="metadata.name"))

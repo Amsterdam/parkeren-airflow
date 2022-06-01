@@ -60,7 +60,7 @@ with DAG(
                 "-"
             ),
             namespace=NAMESPACE,
-            image="parkerenweuacrow77kin67.azurecr.io/parkeren-spark:wout",
+            image="parkerenweuacrow77kin67.azurecr.io/parkeren-spark:thomas",
             job_script_path="/app/src/jobs/master_data/run_all_master.py",
             spark_driver_cores=1,
             spark_driver_memory_gb=1,

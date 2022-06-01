@@ -36,7 +36,7 @@ def generate_job(
         spec=client.V1JobSpec(
             backoff_limit=3,
             active_deadline_seconds=57600,
-            ttl_seconds_after_finished=600,
+            ttl_seconds_after_finished=60 * 60 * 12,
             template=client.V1PodTemplateSpec(
                 metadata=client.V1ObjectMeta(labels={"aadpodidbinding": "airflow-identity"}),
                 spec=client.V1PodSpec(

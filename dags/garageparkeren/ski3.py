@@ -66,30 +66,30 @@ with DAG(
 
     start >> run_staging_to_his >> watch_staging_to_his
 
-    staging_to_archive = generate_job(
-        job_name=f"ski3-sta-to-arch-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip("-"),
-        namespace=NAMESPACE,
-        image=IMAGE,
-        job_script_path="/app/src/jobs/staging_to_historic/ski3/archive.py",
-        spark_driver_cores=1,
-        spark_driver_memory_gb=8,
-        spark_executor_cores=2,
-        spark_executor_memory_gb=8,
-        spark_executor_instances=3,
-    )
+    # staging_to_archive = generate_job(
+    #     job_name=f"ski3-sta-to-arch-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip("-"),
+    #     namespace=NAMESPACE,
+    #     image=IMAGE,
+    #     job_script_path="/app/src/jobs/staging_to_historic/ski3/archive.py",
+    #     spark_driver_cores=1,
+    #     spark_driver_memory_gb=8,
+    #     spark_executor_cores=2,
+    #     spark_executor_memory_gb=8,
+    #     spark_executor_instances=3,
+    # )
+    #
+    # run_staging_to_archive = JobOperator(
+    #     job=staging_to_archive, task_id="run-ski3-sta-to-arch"
+    # )
+    #
+    # watch_staging_to_archive: BaseOperator = JobSensor(
+    #     job_name=staging_to_archive.metadata.name,
+    #     task_id="watch-ski3-sta-to-arch",
+    #     namespace=NAMESPACE,
+    #     poke_interval=60 + job_sensor_poke_jitter(),
+    # )
 
-    run_staging_to_archive = JobOperator(
-        job=staging_to_archive, task_id="run-ski3-sta-to-arch"
-    )
-
-    watch_staging_to_archive: BaseOperator = JobSensor(
-        job_name=staging_to_archive.metadata.name,
-        task_id="watch-ski3-sta-to-arch",
-        namespace=NAMESPACE,
-        poke_interval=60 + job_sensor_poke_jitter(),
-    )
-
-    watch_staging_to_his >> run_staging_to_archive >> watch_staging_to_archive
+    # watch_staging_to_his >> run_staging_to_archive >> watch_staging_to_archive
 
     # 7 cores 41 mem
     to_integration_jobs = [
@@ -131,7 +131,7 @@ with DAG(
 
     for to_integration_job in to_integration_jobs:
         add_job_to_node(
-            watch_staging_to_archive, to_integration_job, timestamp_str, end_to_int
+            watch_staging_to_his, to_integration_job, timestamp_str, end_to_int
         )
 
     # 8 cores 48 mem

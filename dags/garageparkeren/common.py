@@ -7,7 +7,7 @@ from operators.kubernetes import JobOperator, JobSensor, BaseOperator
 
 KUBERNETES_MEMORY_OVERHEAD_FACTOR = 0.1
 NAMESPACE = "airflow-mobibbn1"
-IMAGE = "parkerenweuacrow77kin67.azurecr.io/parkeren-spark:thomas"
+IMAGE = "parkerenweuacrow77kin67.azurecr.io/parkeren-spark:latest"
 MAX_JOB_NAME_LENGTH = 63
 
 

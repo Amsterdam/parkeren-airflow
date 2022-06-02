@@ -30,6 +30,7 @@ DAG_ID = "garageparkerenraw-ipp1"
 INTERVAL = None
 # INTERVAL = timedelta(hours=1)
 
+# 2 jun 11:46
 with DAG(
     DAG_ID,
     schedule_interval=INTERVAL,

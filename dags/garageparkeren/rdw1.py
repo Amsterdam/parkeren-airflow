@@ -43,7 +43,7 @@ with DAG(
         f"rdw1-sta-to-his-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip("-"),
         NAMESPACE,
         IMAGE,
-        "/app/src/jobs/staging_to_historic/rdw1/job.py",
+        "/app/src/jobs/staging_to_historic/rdw-npr1/job.py",
         spark_driver_memory_gb=4,
         spark_executor_memory_gb=2,
         spark_executor_instances=2,

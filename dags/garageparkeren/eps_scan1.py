@@ -22,7 +22,7 @@ ARGS = {
     "retry_delay": timedelta(minutes=15),
 }
 
-DAG_ID = "garageparkerenraw-eps1"
+DAG_ID = "garageparkerenraw-eps-scan1"
 
 INTERVAL = None
 
@@ -40,21 +40,21 @@ with DAG(
 
     # To historic
     staging_to_his = generate_job(
-        f"eps1-sta-to-his-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip("-"),
+        f"eps-scan1-sta-to-his-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip("-"),
         NAMESPACE,
         IMAGE,
-        "/app/src/jobs/staging_to_historic/eps1/job.py",
+        "/app/src/jobs/staging_to_historic/eps_scan1/job.py",
         spark_driver_memory_gb=4,
         spark_executor_memory_gb=2,
         spark_executor_instances=2,
         spark_executor_cores=1,
     )
 
-    run_staging_to_his = JobOperator(job=staging_to_his, task_id="run-eps1-sta-to-his")
+    run_staging_to_his = JobOperator(job=staging_to_his, task_id="run-eps-scan1-sta-to-his")
 
     watch_staging_to_his: BaseOperator = JobSensor(
         job_name=staging_to_his.metadata.name,
-        task_id="watch-eps1-sta-to-his",
+        task_id="watch-eps-scan1-sta-to-his",
         namespace=NAMESPACE,
         poke_interval=60 + job_sensor_poke_jitter(),
     )

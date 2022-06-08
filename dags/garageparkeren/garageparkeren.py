@@ -27,15 +27,15 @@ with DAG(
     max_active_runs=1,
 ) as dag:
 
-    start_validation = DummyOperator(task_id="start_validation", dag=dag)
-
-    run_validate = TriggerDagRunOperator(
-        trigger_dag_id="garageparkerenraw-validate", task_id="run-validate", dag=dag
-    )
-
-    check_validate = DagSensor(
-        dag=dag, task_id="watch-validate", external_dag_id="garageparkerenraw-validate"
-    )
+    # start_validation = DummyOperator(task_id="start_validation", dag=dag)
+    #
+    # run_validate = TriggerDagRunOperator(
+    #     trigger_dag_id="garageparkerenraw-validate", task_id="run-validate", dag=dag
+    # )
+    #
+    # check_validate = DagSensor(
+    #     dag=dag, task_id="watch-validate", external_dag_id="garageparkerenraw-validate"
+    # )
 
     start_staging_to_datamart = DummyOperator(
         task_id="start_staging_to_datamart", dag=dag
@@ -105,7 +105,6 @@ with DAG(
         external_dag_id="garageparkerenraw-ski3",
     )
 
-    start_validation >> run_validate >> check_validate >> start_staging_to_datamart
 
     (
         start_staging_to_datamart
@@ -132,18 +131,18 @@ with DAG(
         >> end_staging_to_datamart
     )
 
-    run_to_postgres = TriggerDagRunOperator(
-        trigger_dag_id="garageparkerenraw-to-postgres",
-        task_id="run-to-postgres",
-        dag=dag,
-        wait_for_completion=True,
-    )
-
-    check_to_postgres = DagSensor(
-        dag=dag,
-        task_id="watch-to-postgres",
-        external_dag_id="garageparkerenraw-to-postgres",
-    )
+    # run_to_postgres = TriggerDagRunOperator(
+    #     trigger_dag_id="garageparkerenraw-to-postgres",
+    #     task_id="run-to-postgres",
+    #     dag=dag,
+    #     wait_for_completion=True,
+    # )
+    #
+    # check_to_postgres = DagSensor(
+    #     dag=dag,
+    #     task_id="watch-to-postgres",
+    #     external_dag_id="garageparkerenraw-to-postgres",
+    # )
 
     # run_dedupe_historic = TriggerDagRunOperator(
     #     trigger_dag_id="garageparkerenraw-dedupe-historic",
@@ -184,7 +183,7 @@ with DAG(
     #     external_dag_id="garageparkerenraw-eps1",
     # )
 
-    end_staging_to_datamart >> run_to_postgres >> check_to_postgres >> end
+    end_staging_to_datamart >> end
     # end_staging_to_datamart >> run_rdw1_staging_to_historic >> check_rdw1_staging_to_historic >> end
     # end_staging_to_datamart >> run_eps1_staging_to_historic >> check_eps1_staging_to_historic >> end
 

@@ -1,11 +1,12 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from random import uniform
+from typing import List
 
 from kubernetes import client
 from operators.kubernetes import JobOperator, JobSensor, BaseOperator
 
 KUBERNETES_MEMORY_OVERHEAD_FACTOR = 0.1
-NAMESPACE = "garageparkerenraw"
+NAMESPACE = "airflow-mobibbn1"
 IMAGE = "parkerenweuacrow77kin67.azurecr.io/parkeren-spark:latest"
 MAX_JOB_NAME_LENGTH = 63
 
@@ -21,117 +22,128 @@ def generate_job(
     spark_executor_memory_gb: int = 1,
     spark_executor_instances: int = 1,
     #     TODO change naming
-    source_system: str = "",
+    arguments: List[str] = None,
 ) -> client.V1Job:
+    if arguments is None:
+        arguments = []
+
     kubernetes_memory_mb = int(
         ((1 + KUBERNETES_MEMORY_OVERHEAD_FACTOR) * 1000) * spark_driver_memory_gb
     )
     return client.V1Job(
-        metadata=client.V1ObjectMeta(name=job_name, namespace=namespace),
+        metadata=client.V1ObjectMeta(name=job_name, namespace=namespace, labels={"job_type": "spark",
+                                                                                 "aadpodidbinding": "airflow-identity"}),
         spec=client.V1JobSpec(
             backoff_limit=3,
             active_deadline_seconds=57600,
+            ttl_seconds_after_finished=60 * 60 * 12,
             template=client.V1PodTemplateSpec(
+                metadata=client.V1ObjectMeta(labels={"aadpodidbinding": "airflow-identity"}),
                 spec=client.V1PodSpec(
                     restart_policy="Never",
-                    image_pull_secrets=[
-                        client.V1LocalObjectReference(name="spark-jobs-read-registry")
-                    ],
-                    automount_service_account_token=False,
-                    volumes=[
-                        client.V1Volume(
-                            name="spark-defaults",
-                            config_map=client.V1ConfigMapVolumeSource(
-                                default_mode=420,
-                                name="spark-defaults",
-                                items=[
-                                    client.V1KeyToPath(
-                                        key="spark-defaults", path="spark-defaults.conf"
-                                    )
-                                ],
-                            ),
-                        )
-                    ],
+                    service_account_name="spark",
+                    node_selector={"nodetype": "mobibbn1work"},
+                    # volumes=[
+                    #     client.V1Volume(
+                    #         name="spark-defaults",
+                    #         config_map=client.V1ConfigMapVolumeSource(
+                    #             default_mode=420,
+                    #             name="spark-defaults",
+                    #             items=["
+                    #                 client.V1KeyToPath(
+                    #                     key="spark-defaults", path="spark-defaults.conf"
+                    #                 )
+                    #             ],
+                    #         ),
+                    #     )
+                    # ],
                     containers=[
                         client.V1Container(
                             name="driver",
                             image=image,
                             image_pull_policy="Always",
-                            command=["python3", job_script_path, source_system],
+                            command=["python3", job_script_path] + arguments,
                             env=[
                                 client.V1EnvVar(
-                                    name="POSTGRES_USER",
+                                    name="SA_DATA_PARKEREN",
                                     value_from=client.V1EnvVarSource(
                                         secret_key_ref=client.V1SecretKeySelector(
-                                            name="garageparkeren-database",
-                                            key="username",
+                                            name="data-storage-name",
+                                            key="SA_DATA_PARKEREN",
                                         )
                                     ),
                                 ),
                                 client.V1EnvVar(
-                                    name="POSTGRES_PASSWORD",
+                                    name="SA_DATA_PARKEREN_SAS",
                                     value_from=client.V1EnvVarSource(
                                         secret_key_ref=client.V1SecretKeySelector(
-                                            name="garageparkeren-database",
-                                            key="password",
+                                            name="data-storage-sas",
+                                            key="SA_DATA_PARKEREN_SAS",
                                         )
                                     ),
                                 ),
                                 client.V1EnvVar(
-                                    name="AWS_ACCESS_KEY_ID",
+                                    name="DADI_DATA_STORAGE_NAME",
                                     value_from=client.V1EnvVarSource(
                                         secret_key_ref=client.V1SecretKeySelector(
-                                            name="garageparkerenraw-minio",
-                                            key="accesskey",
+                                            name="dadi-data-storage-name",
+                                            key="DADI_DATA_STORAGE_NAME",
                                         )
                                     ),
                                 ),
                                 client.V1EnvVar(
-                                    name="AWS_SECRET_ACCESS_KEY",
+                                    name="MID_AIRFLOW_MOBIBBN1",
                                     value_from=client.V1EnvVarSource(
                                         secret_key_ref=client.V1SecretKeySelector(
-                                            name="garageparkerenraw-minio",
-                                            key="secretkey",
+                                            name="mid-airflow-mobibbn1",
+                                            key="MID_AIRFLOW_MOBIBBN1",
                                         )
                                     ),
                                 ),
                                 client.V1EnvVar(
-                                    name="MINIO_ACCESS_KEY",
+                                    name="SA_STATUS_PARKEREN",
                                     value_from=client.V1EnvVarSource(
                                         secret_key_ref=client.V1SecretKeySelector(
-                                            name="garageparkerenraw-minio",
-                                            key="accesskey",
+                                            name="status-storage-name",
+                                            key="SA_STATUS_PARKEREN",
                                         )
                                     ),
                                 ),
                                 client.V1EnvVar(
-                                    name="MINIO_SECRET_KEY",
+                                    name="SA_STATUS_PARKEREN_SAS",
                                     value_from=client.V1EnvVarSource(
                                         secret_key_ref=client.V1SecretKeySelector(
-                                            name="garageparkerenraw-minio",
-                                            key="secretkey",
+                                            name="status-storage-sas",
+                                            key="SA_STATUS_PARKEREN_SAS",
                                         )
                                     ),
                                 ),
                                 client.V1EnvVar(
-                                    name="MINIO_ENDPOINT", value="minio.minio:9000"
-                                ),
-                                client.V1EnvVar(name="MINIO_SECURE", value="0"),
-                                client.V1EnvVar(
-                                    name="SPARK_PUBLIC_DNS",
-                                    value_from=client.V1EnvVarSource(
-                                        field_ref=client.V1ObjectFieldSelector(
-                                            field_path="status.podIP"
-                                        )
-                                    ),
+                                    name="POD_NAME",
+                                    value_from=client.V1EnvVarSource(field_ref=client
+                                                                     .V1ObjectFieldSelector(field_path="metadata.name"))
                                 ),
                                 client.V1EnvVar(
-                                    name="SPARK_LOCAL_HOSTNAME",
-                                    value_from=client.V1EnvVarSource(
-                                        field_ref=client.V1ObjectFieldSelector(
-                                            field_path="status.podIP"
-                                        )
-                                    ),
+                                    name="SPARK_DRIVER_BIND_ADDRESS",
+                                    value_from=client.V1EnvVarSource(field_ref=client
+                                                                     .V1ObjectFieldSelector(field_path="status.podIP"))
+                                ),
+                                client.V1EnvVar(
+                                    name="SPARK_LOCAL_IP",
+                                    value_from=client.V1EnvVarSource(field_ref=client
+                                                                     .V1ObjectFieldSelector(field_path="status.podIP"))
+                                ),
+                                client.V1EnvVar(
+                                    name="IMAGE",
+                                    value=str(image),
+                                ),
+                                client.V1EnvVar(
+                                    name="PYTHONPATH",
+                                    value=str("/app"),
+                                ),
+                                client.V1EnvVar(
+                                    name="NAMESPACE",
+                                    value=str(namespace),
                                 ),
                                 client.V1EnvVar(
                                     name="SPARK_DRIVER_CORES",
@@ -171,13 +183,13 @@ def generate_job(
                                     memory=f"{kubernetes_memory_mb}M",
                                 ),
                             ),
-                            volume_mounts=[
-                                client.V1VolumeMount(
-                                    name="spark-defaults",
-                                    sub_path="spark-defaults.conf",
-                                    mount_path="/opt/spark/conf/spark-defaults.conf",
-                                )
-                            ],
+                            # volume_mounts=[
+                            #     client.V1VolumeMount(
+                            #         name="spark-defaults",
+                            #         sub_path="spark-defaults.conf",
+                            #         mount_path="/opt/spark/conf/spark-defaults.conf",
+                            #     )
+                            # ],
                         )
                     ],
                 )
@@ -196,7 +208,7 @@ class SparkJob:
     python_path: str
     spark_driver_cores: int = 1
     spark_executor_cores: int = 1
-    source_system: str = ""
+    arguments: List[str] = None
 
 
 def add_job_to_node(
@@ -217,7 +229,7 @@ def add_job_to_node(
         spark_driver_cores=spark_job.spark_driver_cores,
         spark_executor_cores=spark_job.spark_executor_cores,
         # TODO change naming
-        source_system=spark_job.source_system,
+        arguments=spark_job.arguments,
     )
     # TODO change naming
     run_his_to_int = JobOperator(job=his_to_int, task_id=f"run-{job_name}")

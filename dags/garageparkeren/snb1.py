@@ -118,7 +118,7 @@ with DAG(
             spark_executor_instances=2,
             python_path="/app/src/jobs/integration_to_datamart/bezetting.py",
             spark_executor_cores=2,
-            source_system="snb1",
+            arguments=["snb1"],
         ),
         SparkJob(
             job="snb1-int-to-datamart-opbrengst",
@@ -127,7 +127,7 @@ with DAG(
             spark_executor_instances=2,
             python_path="/app/src/jobs/integration_to_datamart/opbrengst.py",
             spark_executor_cores=1,
-            source_system="snb1",
+            arguments=["snb1"],
         ),
         SparkJob(
             job="snb1-int-to-datamart-parkeerduur",
@@ -136,7 +136,7 @@ with DAG(
             spark_executor_instances=2,
             python_path="/app/src/jobs/integration_to_datamart/parkeerduur.py",
             spark_executor_cores=1,
-            source_system="snb1",
+            arguments=["snb1"],
         ),
     ]
 

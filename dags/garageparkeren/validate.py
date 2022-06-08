@@ -48,7 +48,7 @@ with DAG(
             spark_executor_instances=1,
             python_path="/app/src/jobs/data_quality/validate_staging_tables_exist.py",
             spark_executor_cores=1,
-            source_system=source_system,
+            arguments=[source_system],
         )
         add_job_to_node(
             start,
@@ -63,7 +63,7 @@ with DAG(
             spark_executor_instances=1,
             python_path="/app/src/jobs/data_quality/collect_garage_cdes.py",
             spark_executor_cores=1,
-            source_system=source_system,
+            arguments=[source_system],
         )
         add_job_to_node(
             end_validate_staging_tables_exist,

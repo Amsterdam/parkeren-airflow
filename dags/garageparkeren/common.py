@@ -1,14 +1,25 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from random import uniform
 from typing import List
+import os
 
 from kubernetes import client
 from operators.kubernetes import JobOperator, JobSensor, BaseOperator
 
 KUBERNETES_MEMORY_OVERHEAD_FACTOR = 0.1
 NAMESPACE = "airflow-mobibbn1"
-IMAGE = "parkerenweuacrow77kin67.azurecr.io/parkeren-spark:latest"
 MAX_JOB_NAME_LENGTH = 63
+
+# Set correct IMAGE based on environment
+ENV = os.getenv('AZURE_OTAP_ENVIRONMENT').split(':')[1]
+if ENV == "ont":
+    IMAGE = "parkerenweuacrow77kin67.azurecr.io/parkeren-spark:latest"
+elif ENV == "tst":
+    IMAGE = "parkerenweuacrtsgt2wb75.azurecr.io/parkeren-spark:latest"
+elif ENV == "acc":
+    IMAGE = "parkerenweuacravtiwapss.azurecr.io/parkeren-spark:latest"
+elif ENV == "prd":
+    IMAGE = "parkerenweuacrpecceg7b3.azurecr.io/parkeren-spark:latest"
 
 
 def generate_job(

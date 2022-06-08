@@ -43,7 +43,7 @@ with DAG(
 
     start = DummyOperator(task_id="start", dag=dag)
 
-    # To historic
+    # To historicc
     staging_to_his = generate_job(
         f"ipp1-sta-to-his-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip("-"),
         NAMESPACE,

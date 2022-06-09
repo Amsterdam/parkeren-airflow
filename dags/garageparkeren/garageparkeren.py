@@ -4,12 +4,13 @@ from operators.dag_sensor import DagSensor
 from airflow import DAG
 from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.operators.dummy import DummyOperator
+from dags.garageparkeren.common import OWNER
 
 DAG_ID = "garageparkeren-all"
 INTERVAL = "1 16 * * *"
 
 ARGS = {
-    "owner": "garageparkeren",
+    "owner": OWNER,
     "description": "",
     "depend_on_past": False,
     "start_date": datetime(2020, 12, 1),
@@ -97,7 +98,7 @@ with DAG(
 
     run_to_csv = TriggerDagRunOperator(
         trigger_dag_id="garageparkeren-to-csv",
-        task_id="run-ski3-staging-to-datamart",
+        task_id="run-garageparkeren-to-csv",
         dag=dag,
     )
 

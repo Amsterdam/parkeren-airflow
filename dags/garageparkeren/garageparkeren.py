@@ -94,6 +94,19 @@ with DAG(
         task_id="watch-ski3-staging-to-datamart",
         external_dag_id="garageparkeren-ski3",
     )
+
+    run_to_csv = TriggerDagRunOperator(
+        trigger_dag_id="garageparkeren-to-csv",
+        task_id="run-ski3-staging-to-datamart",
+        dag=dag,
+    )
+
+    check_to_csv = DagSensor(
+        dag=dag,
+        task_id="watch-garageparkeren-to-csv",
+        external_dag_id="garageparkeren-to-csv",
+    )
+
     (
         start_staging_to_datamart
         >> run_ipp1_staging_to_datamart
@@ -119,8 +132,9 @@ with DAG(
         >> end_staging_to_datamart
     )
     (
-        end_staging_to_datamart
+        start_staging_to_datamart
         >> run_scn1_staging_to_datamart
         >> check_scn1_staging_to_datamart
-        >> end
+        >> end_staging_to_datamart
     )
+    end_staging_to_datamart >> run_to_csv >> check_to_csv

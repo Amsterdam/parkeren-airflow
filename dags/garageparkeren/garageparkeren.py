@@ -34,8 +34,6 @@ with DAG(
 
     end_staging_to_datamart = DummyOperator(task_id="end_staging_to_datamart", dag=dag)
 
-    end = DummyOperator(task_id="end", dag=dag)
-
     run_ipp1_staging_to_datamart = TriggerDagRunOperator(
         trigger_dag_id="garageparkeren-ipp1",
         task_id="run-ipp1-staging-to-datamart",

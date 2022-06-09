@@ -270,10 +270,10 @@ with DAG(
             image=IMAGE,
             job_script_path=f"/app/src/jobs/migration/{source_system_job}/migrate.py",
             spark_driver_cores=1,
-            spark_driver_memory_gb=1,
+            spark_driver_memory_gb=8,
             spark_executor_cores=2,
-            spark_executor_memory_gb=2,
-            spark_executor_instances=2,
+            spark_executor_memory_gb=8,
+            spark_executor_instances=4,
             arguments=arguments[source_system_job]
         )
 

@@ -13,7 +13,7 @@ from dags.garageparkeren.common import (
 
 
 ARGS = {
-    "owner": "garageparkeren - thomask",
+    "owner": "garageparkeren",
     "description": "",
     "depend_on_past": False,
     "start_date": datetime(2020, 12, 1),

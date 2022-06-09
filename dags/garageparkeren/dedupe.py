@@ -12,7 +12,7 @@ from dags.garageparkeren.common import (
 )
 
 ARGS = {
-    "owner": "garageparkerenraw - thomask",
+    "owner": "garageparkeren",
     "description": "",
     "depend_on_past": False,
     "start_date": datetime(2020, 12, 1),
@@ -22,7 +22,7 @@ ARGS = {
     "retry_delay": timedelta(minutes=15),
 }
 
-DAG_ID = "garageparkerenraw-dedupe-historic"
+DAG_ID = "garageparkeren-dedupe-historic"
 
 INTERVAL = None
 

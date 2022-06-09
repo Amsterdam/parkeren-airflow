@@ -8,10 +8,11 @@ from dags.garageparkeren.common import (
     NAMESPACE,
     MAX_JOB_NAME_LENGTH,
     IMAGE,
+    OWNER
 )
 
 ARGS = {
-    "owner": "garageparkeren",
+    "owner": OWNER,
     "description": "",
     "depend_on_past": False,
     "start_date": datetime(2020, 12, 1),
@@ -39,11 +40,12 @@ with DAG(
     start = DummyOperator(task_id="start", dag=dag)
 
     source_systems_jobs = [
-        "ipp1",
-        "scn1",
-        "ski1",
-        "ski2",
-        "ski3",
+        # "ipp1",
+        # "ipp2",
+        # "scn1",
+        # "ski1",
+        # "ski2",
+        # "ski3",
         "snb1"
     ]
 
@@ -63,6 +65,46 @@ with DAG(
             "TerminalRequestException",
             "vwCounterCorrection",
             "vwCounterSample",
+        ],
+        "ipp2": [
+            "CityPassTransaction",
+            "Company",
+            "CountBlock",
+            "CounterCorrection",
+            "CounterSample",
+            "DaySchedule",
+            "ExcessiveParkingTime",
+            "FacilityFee",
+            "Facility",
+            "FeeElement",
+            "FeeFolder",
+            "FeeSchedule",
+            "GateMovement",
+            "Identification",
+            "Invoice",
+            "ManualCorrection",
+            "ManualPassRequest",
+            "ParkingTransaction",
+            "Payment",
+            "PoolUsage",
+            "ReductionCardProfile",
+            "Reduction",
+            "ReservationFacility",
+            "Reservation",
+            "SiteAccess",
+            "Subscriber",
+            "SubscriptionModelSiteAccess",
+            "SubscriptionModel",
+            "SubSectionAccess",
+            "SubSectionCounters",
+            "SubSection",
+            "TerminalLog",
+            "TerminalRequestException",
+            "Terminal",
+            "TimeDiagramRange",
+            "TimeDiagram",
+            "TimeSchedule",
+            "TvsReductionProfile",
         ],
         "scn1": [
             "Abonnementen",
@@ -228,10 +270,10 @@ with DAG(
             image=IMAGE,
             job_script_path=f"/app/src/jobs/migration/{source_system_job}/migrate.py",
             spark_driver_cores=1,
-            spark_driver_memory_gb=1,
+            spark_driver_memory_gb=8,
             spark_executor_cores=2,
-            spark_executor_memory_gb=2,
-            spark_executor_instances=2,
+            spark_executor_memory_gb=8,
+            spark_executor_instances=4,
             arguments=arguments[source_system_job]
         )
 

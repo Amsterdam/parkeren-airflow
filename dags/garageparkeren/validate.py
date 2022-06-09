@@ -3,10 +3,10 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.dummy import DummyOperator
 
-from dags.garageparkeren.common import SparkJob, add_job_to_node
+from dags.garageparkeren.common import SparkJob, add_job_to_node, OWNER
 
 ARGS = {
-    "owner": "garageparkerenraw - thomask",
+    "owner": OWNER,
     "description": "",
     "depend_on_past": False,
     "start_date": datetime(2020, 12, 1),
@@ -16,7 +16,7 @@ ARGS = {
     "retry_delay": timedelta(minutes=15),
 }
 
-DAG_ID = "garageparkerenraw-validate"
+DAG_ID = "garageparkeren-validate"
 
 INTERVAL = None
 # INTERVAL = timedelta(hours=1)

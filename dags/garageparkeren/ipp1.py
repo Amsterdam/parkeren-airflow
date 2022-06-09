@@ -12,10 +12,11 @@ from dags.garageparkeren.common import (
     SparkJob,
     add_job_to_node,
     job_sensor_poke_jitter,
+    OWNER
 )
 
 ARGS = {
-    "owner": "garageparkerenraw - thomask",
+    "owner": OWNER,
     "description": "",
     "depend_on_past": False,
     "start_date": datetime(2020, 12, 1),
@@ -25,7 +26,7 @@ ARGS = {
     "retry_delay": timedelta(minutes=15),
 }
 
-DAG_ID = "garageparkerenraw-ipp1"
+DAG_ID = "garageparkeren-ipp1"
 
 INTERVAL = None
 # INTERVAL = timedelta(hours=1)
@@ -43,7 +44,7 @@ with DAG(
 
     start = DummyOperator(task_id="start", dag=dag)
 
-    # To historicc
+    # To historic
     staging_to_his = generate_job(
         f"ipp1-sta-to-his-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip("-"),
         NAMESPACE,

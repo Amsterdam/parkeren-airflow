@@ -9,17 +9,22 @@ from operators.kubernetes import JobOperator, JobSensor, BaseOperator
 KUBERNETES_MEMORY_OVERHEAD_FACTOR = 0.1
 NAMESPACE = "airflow-mobibbn1"
 MAX_JOB_NAME_LENGTH = 63
+OWNER = "parkeren"
 
 # Set correct IMAGE based on environment
 ENV = os.getenv('AZURE_OTAP_ENVIRONMENT').split(':')[1]
 if ENV == "ont":
     IMAGE = "parkerenweuacrow77kin67.azurecr.io/parkeren-spark:latest"
+    RUN_ALL_INTERVAL = None
 elif ENV == "tst":
     IMAGE = "parkerenweuacrtsgt2wb75.azurecr.io/parkeren-spark:latest"
+    RUN_ALL_INTERVAL = None
 elif ENV == "acc":
     IMAGE = "parkerenweuacravtiwapss.azurecr.io/parkeren-spark:latest"
+    RUN_ALL_INTERVAL = None
 elif ENV == "prd":
     IMAGE = "parkerenweuacrpecceg7b3.azurecr.io/parkeren-spark:latest"
+    RUN_ALL_INTERVAL = "1 16 * * *"
 
 
 def generate_job(

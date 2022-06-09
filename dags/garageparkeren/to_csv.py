@@ -2,10 +2,10 @@ from datetime import datetime, timedelta
 
 from airflow import DAG
 from airflow.operators.dummy import DummyOperator
-from dags.garageparkeren.common import SparkJob, add_job_to_node
+from dags.garageparkeren.common import SparkJob, add_job_to_node, OWNER
 
 ARGS = {
-    "owner": "garageparkerenraw - thomask",
+    "owner": OWNER,
     "description": "",
     "depend_on_past": False,
     "start_date": datetime(2020, 12, 1),
@@ -15,7 +15,7 @@ ARGS = {
     "retry_delay": timedelta(minutes=15),
 }
 
-DAG_ID = "garageparkerenraw-to-postgres"
+DAG_ID = "garageparkeren-to-csv"
 
 INTERVAL = None
 
@@ -31,50 +31,42 @@ with DAG(
 
     start = DummyOperator(task_id="start", dag=dag)
 
-    to_postgres_jobs = [
+    to_csv_jobs = [
         SparkJob(
-            job="to-postgres-bezetting-per-kwartier",
+            job="to-csv-bezetting-per-kwartier",
             spark_driver_memory_gb=2,
             spark_executor_memory_gb=8,
             spark_executor_instances=2,
-            python_path="/app/src/jobs/minio_to_postgres/bezetting_per_kwartier.py",
+            python_path="/app/src/jobs/datamart_to_csv/bezetting_per_kwartier_to_csv.py",
             spark_executor_cores=2,
         ),
         SparkJob(
-            job="to-postgres-opbrengst-per-kwartier",
+            job="to-csv-opbrengst-per-kwartier",
             spark_driver_memory_gb=2,
             spark_executor_memory_gb=8,
             spark_executor_instances=2,
-            python_path="/app/src/jobs/minio_to_postgres/opbrengst_per_kwartier.py",
+            python_path="/app/src/jobs/datamart_to_csv/opbrengst_per_kwartier_to_csv.py",
             spark_executor_cores=2,
         ),
         SparkJob(
-            job="to-postgres-parkeerduur-per-kwartier",
+            job="to-csv-parkeerduur-per-kwartier",
             spark_driver_memory_gb=2,
             spark_executor_memory_gb=8,
             spark_executor_instances=2,
-            python_path="/app/src/jobs/minio_to_postgres/parkeerduur_per_kwartier.py",
+            python_path="/app/src/jobs/datamart_to_csv/parkeerduur_per_kwartier_to_csv.py",
             spark_executor_cores=2,
         ),
         SparkJob(
-            job="to-postgres-load-jdbc-dimension",
+            job="to-csv-dimensions",
             spark_driver_memory_gb=2,
             spark_executor_memory_gb=8,
             spark_executor_instances=2,
-            python_path="/app/src/jobs/minio_to_postgres/load_jdbc_dimension.py",
-            spark_executor_cores=2,
-        ),
-        SparkJob(
-            job="to-postgres-bezetting-per-kwartier-kaartsoort",
-            spark_driver_memory_gb=2,
-            spark_executor_memory_gb=8,
-            spark_executor_instances=2,
-            python_path="/app/src/jobs/minio_to_postgres/bezetting_per_kwartier_kaartsoort.py",
+            python_path="/app/src/jobs/datamart_to_csv/dimensions_to_csv.py",
             spark_executor_cores=2,
         ),
     ]
 
-    end_to_postgres = DummyOperator(task_id="end_to_postgres", dag=dag)
+    end_to_csv = DummyOperator(task_id="end_to_csv", dag=dag)
 
-    for to_postgres_job in to_postgres_jobs:
-        add_job_to_node(start, to_postgres_job, timestamp_str, end_to_postgres)
+    for to_csv_job in to_csv_jobs:
+        add_job_to_node(start, to_csv_job, timestamp_str, end_to_csv)

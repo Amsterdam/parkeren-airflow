@@ -8,7 +8,8 @@ from dags.garageparkeren.common import (
     generate_job,
     NAMESPACE,
     MAX_JOB_NAME_LENGTH,
-    OWNER
+    OWNER,
+    IMAGE
 )
 
 
@@ -60,13 +61,14 @@ with DAG(
                 "-"
             ),
             namespace=NAMESPACE,
-            image="parkerenweuacrow77kin67.azurecr.io/parkeren-spark:thomas",
-            job_script_path="/app/src/jobs/master_data/run_all_master.py",
+            image=IMAGE,
+            job_script_path="/app/src/util/list_storage_contents.py",
             spark_driver_cores=1,
             spark_driver_memory_gb=1,
             spark_executor_cores=2,
             spark_executor_memory_gb=2,
-            spark_executor_instances=2,
+            spark_executor_instances=1,
+            arguments=["accparkerensa", "garageparkeren-historic-snb", "v1"]
         )
 
         run_test_job = JobOperator(job=test_job, task_id=f"run-test-spark-job-wout-{job}")

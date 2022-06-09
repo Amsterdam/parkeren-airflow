@@ -9,10 +9,11 @@ from dags.garageparkeren.common import (
     NAMESPACE,
     MAX_JOB_NAME_LENGTH,
     IMAGE,
+    OWNER
 )
 
 ARGS = {
-    "owner": "garageparkeren",
+    "owner": OWNER,
     "description": "",
     "depend_on_past": False,
     "start_date": datetime(2020, 12, 1),

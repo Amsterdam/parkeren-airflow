@@ -11,10 +11,11 @@ from dags.garageparkeren.common import (
     SparkJob,
     add_job_to_node,
     job_sensor_poke_jitter,
+    OWNER
 )
 
 ARGS = {
-    "owner": "garageparkeren",
+    "owner": OWNER,
     "description": "",
     "depend_on_past": False,
     "start_date": datetime(2020, 12, 1),

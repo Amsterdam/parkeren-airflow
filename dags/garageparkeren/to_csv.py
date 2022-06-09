@@ -45,7 +45,7 @@ with DAG(
             spark_driver_memory_gb=2,
             spark_executor_memory_gb=8,
             spark_executor_instances=2,
-            python_path="src/jobs/datamart_to_csv/opbrengst_per_kwartier_to_csv.py",
+            python_path="/app/src/jobs/datamart_to_csv/opbrengst_per_kwartier_to_csv.py",
             spark_executor_cores=2,
         ),
         SparkJob(

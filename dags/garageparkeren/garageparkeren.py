@@ -4,10 +4,9 @@ from operators.dag_sensor import DagSensor
 from airflow import DAG
 from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.operators.dummy import DummyOperator
-from dags.garageparkeren.common import OWNER
+from dags.garageparkeren.common import OWNER, RUN_ALL_INTERVAL
 
 DAG_ID = "garageparkeren-all"
-INTERVAL = "1 16 * * *"
 
 ARGS = {
     "owner": OWNER,
@@ -23,7 +22,7 @@ ARGS = {
 with DAG(
     DAG_ID,
     default_args=ARGS,
-    schedule_interval=INTERVAL,
+    schedule_interval=RUN_ALL_INTERVAL,
     catchup=False,
     max_active_runs=1,
 ) as dag:

@@ -44,9 +44,9 @@ with DAG(
         # "ipp2",
         # "scn1",
         # "ski1",
-        # "ski2",
-        # "ski3",
-        "snb1"
+        "ski2",
+        "ski3",
+        # "snb1"
     ]
 
     arguments = {
@@ -273,7 +273,7 @@ with DAG(
             spark_driver_memory_gb=8,
             spark_executor_cores=2,
             spark_executor_memory_gb=8,
-            spark_executor_instances=4,
+            spark_executor_instances=2,
             arguments=arguments[source_system_job]
         )
 

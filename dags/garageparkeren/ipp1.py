@@ -145,4 +145,4 @@ with DAG(
     end_to_datamart = DummyOperator(task_id="end_to_datamart", dag=dag)
 
     for to_datamart_job in to_datamart_jobs:
-        add_job_to_node(end_to_int, to_datamart_job, timestamp_str, end_to_datamart)
+        add_job_to_node(start, to_datamart_job, timestamp_str, end_to_datamart)

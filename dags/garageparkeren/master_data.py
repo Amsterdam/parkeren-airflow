@@ -50,10 +50,10 @@ with DAG(
         namespace=NAMESPACE,
         image=IMAGE,
         job_script_path="/app/src/jobs/master_data/run_all_master.py",
-        spark_driver_cores=1,
-        spark_driver_memory_gb=1,
+        spark_driver_cores=2,
+        spark_driver_memory_gb=4,
         spark_executor_cores=2,
-        spark_executor_memory_gb=2,
+        spark_executor_memory_gb=4,
         spark_executor_instances=2,
     )
 

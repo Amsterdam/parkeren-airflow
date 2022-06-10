@@ -24,7 +24,7 @@ ARGS = {
     "retry_delay": timedelta(minutes=15),
 }
 
-DAG_ID = "garageparkeren-test-wout"
+DAG_ID = "garageparkeren-test-bas"
 
 INTERVAL = None
 # INTERVAL = timedelta(hours=1)
@@ -62,16 +62,16 @@ with DAG(
             ),
             namespace=NAMESPACE,
             image=IMAGE,
-            job_script_path="/app/src/util/list_storage_contents.py",
+            job_script_path="/app/src/util/test_bas.py",
             spark_driver_cores=1,
             spark_driver_memory_gb=1,
             spark_executor_cores=2,
             spark_executor_memory_gb=2,
             spark_executor_instances=1,
-            arguments=["accparkerensa", "garageparkeren-historic-snb", "v1"]
+            # arguments=["argument"]
         )
 
-        run_test_job = JobOperator(job=test_job, task_id=f"run-test-spark-job-wout-{job}")
+        run_test_job = JobOperator(job=test_job, task_id=f"run-test-spark-job-bas-{job}")
 
         watch_test_job: BaseOperator = JobSensor(
             job_name=test_job.metadata.name,

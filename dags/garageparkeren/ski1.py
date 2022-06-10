@@ -43,56 +43,6 @@ with DAG(
 
     start = DummyOperator(task_id="start", dag=dag)
 
-    # To historic
-    staging_to_his = generate_job(
-        f"ski1-sta-to-his-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip("-"),
-        NAMESPACE,
-        IMAGE,
-        "/app/src/jobs/staging_to_historic/ski1/job.py",
-        spark_driver_cores=2,
-        spark_driver_memory_gb=4,
-        spark_executor_cores=2,
-        spark_executor_memory_gb=4,
-        spark_executor_instances=2,
-    )
-
-    run_staging_to_his = JobOperator(job=staging_to_his, task_id="run-ski1-sta-to-his")
-
-    watch_staging_to_his: BaseOperator = JobSensor(
-        job_name=staging_to_his.metadata.name,
-        task_id="watch-ski1-sta-to-his",
-        namespace=NAMESPACE,
-        poke_interval=60 + job_sensor_poke_jitter(),
-    )
-
-    start >> run_staging_to_his >> watch_staging_to_his
-
-    # staging_to_archive = generate_job(
-    #     job_name=f"ski1-sta-to-arch-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip("-"),
-    #     namespace=NAMESPACE,
-    #     image=IMAGE,
-    #     job_script_path="/app/src/jobs/staging_to_historic/ski1/archive.py",
-    #     spark_driver_cores=1,
-    #     spark_driver_memory_gb=8,
-    #     spark_executor_cores=2,
-    #     spark_executor_memory_gb=8,
-    #     spark_executor_instances=3,
-    # )
-    #
-    # run_staging_to_archive = JobOperator(
-    #     job=staging_to_archive, task_id="run-ski1-sta-to-arch"
-    # )
-    #
-    # watch_staging_to_archive: BaseOperator = JobSensor(
-    #     job_name=staging_to_archive.metadata.name,
-    #     task_id="watch-ski1-sta-to-arch",
-    #     namespace=NAMESPACE,
-    #     poke_interval=60 + job_sensor_poke_jitter(),
-    # )
-
-    # watch_staging_to_his >> run_staging_to_archive >> watch_staging_to_archive
-
-    # 6 cores 41 mem
     to_integration_jobs = [
         SparkJob(
             job="ski1-his-to-int-betaalregel",
@@ -132,7 +82,7 @@ with DAG(
 
     for to_integration_job in to_integration_jobs:
         add_job_to_node(
-            watch_staging_to_his, to_integration_job, timestamp_str, end_to_int
+            start, to_integration_job, timestamp_str, end_to_int
         )
 
     # 8 cores 48 mem

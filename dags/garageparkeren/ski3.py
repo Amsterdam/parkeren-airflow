@@ -51,8 +51,8 @@ with DAG(
         "/app/src/jobs/staging_to_historic/ski3/job.py",
         spark_driver_cores=2,
         spark_driver_memory_gb=8,
-        spark_executor_cores=4,
-        spark_executor_memory_gb=8,
+        spark_executor_cores=2,
+        spark_executor_memory_gb=4,
         spark_executor_instances=2,
     )
 

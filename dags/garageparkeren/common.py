@@ -24,7 +24,7 @@ elif ENV == "acc":
     RUN_ALL_INTERVAL = None
 elif ENV == "prd":
     IMAGE = "parkerenweuacrpecceg7b3.azurecr.io/parkeren-spark:latest"
-    RUN_ALL_INTERVAL = "1 16 * * *"
+    RUN_ALL_INTERVAL = None
 
 
 def generate_job(

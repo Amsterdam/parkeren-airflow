@@ -24,7 +24,7 @@ elif ENV == "acc":
     RUN_ALL_INTERVAL = None
 elif ENV == "prd":
     IMAGE = "parkerenweuacrpecceg7b3.azurecr.io/parkeren-spark:latest"
-    RUN_ALL_INTERVAL = "1 16 * * *"
+    RUN_ALL_INTERVAL = None
 
 
 def generate_job(
@@ -52,7 +52,7 @@ def generate_job(
         spec=client.V1JobSpec(
             backoff_limit=3,
             active_deadline_seconds=57600,
-            ttl_seconds_after_finished=60 * 60 * 12,
+            ttl_seconds_after_finished=60 * 60 * 24 * 7,
             template=client.V1PodTemplateSpec(
                 metadata=client.V1ObjectMeta(labels={"aadpodidbinding": "airflow-identity"}),
                 spec=client.V1PodSpec(

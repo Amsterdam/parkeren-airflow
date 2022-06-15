@@ -83,7 +83,7 @@ with DAG(
             ),
             namespace=NAMESPACE,
             image=IMAGE,
-            job_script_path="/app/src/jobs/staging_to_historic/ski2/job_first_run.py",
+            job_script_path="/app/src/jobs/staging_to_historic/ski2/job_first.py",
             spark_driver_cores=1,
             spark_driver_memory_gb=2,
             spark_executor_cores=2,

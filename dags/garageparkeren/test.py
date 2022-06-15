@@ -94,9 +94,9 @@ with DAG(
         run_test_job2 = JobOperator(job=test_job2, task_id=f"2run-test-spark-job-thomas-{job}")
 
         watch_test_job2: BaseOperator = JobSensor(
-            job_name=test_job.metadata.name,
+            job_name=test_job2.metadata.name,
             task_id=f"2watch-test-spark-job-{job}",
             namespace=NAMESPACE,
         )
-        start >> run_test_job >> watch_test_job
+        # start >> run_test_job >> watch_test_job
         start >> run_test_job2 >> watch_test_job2

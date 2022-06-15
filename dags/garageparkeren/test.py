@@ -62,10 +62,10 @@ with DAG(
             namespace=NAMESPACE,
             image=IMAGE,
             job_script_path="/app/src/jobs/staging_to_historic/ski2/job.py",
-            spark_driver_cores=2,
-            spark_driver_memory_gb=8,
-            spark_executor_cores=4,
-            spark_executor_memory_gb=8,
+            spark_driver_cores=1,
+            spark_driver_memory_gb=2,
+            spark_executor_cores=2,
+            spark_executor_memory_gb=2,
             spark_executor_instances=2,
         )
 
@@ -76,4 +76,27 @@ with DAG(
             task_id=f"watch-test-spark-job-{job}",
             namespace=NAMESPACE,
         )
-        slack_at_start >> start >> run_test_job >> watch_test_job
+
+        test_job2 = generate_job(
+            job_name=f"2test-spark-job-{job}-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip(
+                "-"
+            ),
+            namespace=NAMESPACE,
+            image=IMAGE,
+            job_script_path="/app/src/jobs/staging_to_historic/ski2/job_first_run.py",
+            spark_driver_cores=1,
+            spark_driver_memory_gb=2,
+            spark_executor_cores=2,
+            spark_executor_memory_gb=2,
+            spark_executor_instances=2,
+        )
+
+        run_test_job2 = JobOperator(job=test_job2, task_id=f"2run-test-spark-job-thomas-{job}")
+
+        watch_test_job2: BaseOperator = JobSensor(
+            job_name=test_job.metadata.name,
+            task_id=f"2watch-test-spark-job-{job}",
+            namespace=NAMESPACE,
+        )
+        start >> run_test_job >> watch_test_job
+        start >> run_test_job2 >> watch_test_job2

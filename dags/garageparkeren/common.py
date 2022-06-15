@@ -14,7 +14,7 @@ OWNER = "parkeren"
 # Set correct IMAGE based on environment
 ENV = os.getenv('AZURE_OTAP_ENVIRONMENT').split(':')[1]
 if ENV == "ont":
-    IMAGE = "parkerenweuacrow77kin67.azurecr.io/parkeren-spark:latest"
+    IMAGE = "parkerenweuacrow77kin67.azurecr.io/parkeren-spark:thomas"
     RUN_ALL_INTERVAL = None
 elif ENV == "tst":
     IMAGE = "parkerenweuacrtsgt2wb75.azurecr.io/parkeren-spark:latest"

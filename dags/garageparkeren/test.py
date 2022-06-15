@@ -50,9 +50,9 @@ with DAG(
     #     source_system="ski3",
     # ),
 
-    slack_at_start = MessageOperator(
-        task_id="slack_at_start",
-    )
+    # slack_at_start = MessageOperator(
+    #     task_id="slack_at_start",
+    # )
 
     for job in range(1):
         test_job = generate_job(

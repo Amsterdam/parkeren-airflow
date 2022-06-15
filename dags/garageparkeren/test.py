@@ -55,35 +55,13 @@ with DAG(
     # )
 
     for job in range(1):
-        # test_job = generate_job(
-        #     job_name=f"test-spark-job-{job}-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip(
-        #         "-"
-        #     ),
-        #     namespace=NAMESPACE,
-        #     image=IMAGE,
-        #     job_script_path="/app/src/jobs/staging_to_historic/ski2/job.py",
-        #     spark_driver_cores=1,
-        #     spark_driver_memory_gb=2,
-        #     spark_executor_cores=2,
-        #     spark_executor_memory_gb=2,
-        #     spark_executor_instances=2,
-        # )
-        #
-        # run_test_job = JobOperator(job=test_job, task_id=f"run-test-spark-job-thomas-{job}")
-        #
-        # watch_test_job: BaseOperator = JobSensor(
-        #     job_name=test_job.metadata.name,
-        #     task_id=f"watch-test-spark-job-{job}",
-        #     namespace=NAMESPACE,
-        # )
-
-        test_job2 = generate_job(
-            job_name=f"2test-spark-job-{job}-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip(
+        test_job = generate_job(
+            job_name=f"test-spark-job-{job}-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip(
                 "-"
             ),
             namespace=NAMESPACE,
             image=IMAGE,
-            job_script_path="/app/src/jobs/staging_to_historic/ski2/job_first.py",
+            job_script_path="/app/src/jobs/staging_to_historic/ski2/job_first_run.py",
             spark_driver_cores=1,
             spark_driver_memory_gb=2,
             spark_executor_cores=2,
@@ -91,12 +69,12 @@ with DAG(
             spark_executor_instances=2,
         )
 
-        run_test_job2 = JobOperator(job=test_job2, task_id=f"2run-test-spark-job-thomas-{job}")
+        run_test_job = JobOperator(job=test_job, task_id=f"run-test-spark-job-thomas-{job}")
 
-        watch_test_job2: BaseOperator = JobSensor(
-            job_name=test_job2.metadata.name,
-            task_id=f"2watch-test-spark-job-{job}",
+        watch_test_job: BaseOperator = JobSensor(
+            job_name=test_job.metadata.name,
+            task_id=f"watch-test-spark-job-{job}",
             namespace=NAMESPACE,
         )
-        # start >> run_test_job >> watch_test_job
-        start >> run_test_job2 >> watch_test_job2
+
+        start >> run_test_job >> watch_test_job

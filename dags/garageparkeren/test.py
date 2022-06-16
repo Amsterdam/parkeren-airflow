@@ -56,7 +56,7 @@ with DAG(
 
     for job in range(1):
         test_job = generate_job(
-            job_name=f"test-spark-job-{job}-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip(
+            job_name=f"ski2-sta-to-his-spark-job-{job}-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip(
                 "-"
             ),
             namespace=NAMESPACE,
@@ -69,11 +69,11 @@ with DAG(
             spark_executor_instances=2,
         )
 
-        run_test_job = JobOperator(job=test_job, task_id=f"run-test-spark-job-thomas-{job}")
+        run_test_job = JobOperator(job=test_job, task_id=f"run-ski2-sta-to-his-spark-job-thomas-{job}")
 
         watch_test_job: BaseOperator = JobSensor(
             job_name=test_job.metadata.name,
-            task_id=f"watch-test-spark-job-{job}",
+            task_id=f"watch-ski2-sta-to-his-spark-job-{job}",
             namespace=NAMESPACE,
         )
 

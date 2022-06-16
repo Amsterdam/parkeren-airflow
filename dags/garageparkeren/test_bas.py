@@ -51,13 +51,9 @@ with DAG(
     #     source_system="ski3",
     # ),
 
-    slack_at_start = MessageOperator(
-        task_id="slack_at_start",
-    )
-
     for job in range(1):
         test_job = generate_job(
-            job_name=f"test-spark-job-{job}-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip(
+            job_name=f"bas-spark-job-{job}-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip(
                 "-"
             ),
             namespace=NAMESPACE,
@@ -78,4 +74,4 @@ with DAG(
             task_id=f"watch-test-spark-job-{job}",
             namespace=NAMESPACE,
         )
-        slack_at_start >> start >> run_test_job >> watch_test_job
+        start >> run_test_job >> watch_test_job

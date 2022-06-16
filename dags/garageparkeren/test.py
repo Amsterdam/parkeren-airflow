@@ -50,30 +50,31 @@ with DAG(
     #     source_system="ski3",
     # ),
 
-    slack_at_start = MessageOperator(
-        task_id="slack_at_start",
-    )
+    # slack_at_start = MessageOperator(
+    #     task_id="slack_at_start",
+    # )
 
     for job in range(1):
         test_job = generate_job(
-            job_name=f"test-spark-job-{job}-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip(
+            job_name=f"ski2-sta-to-his-spark-job-{job}-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip(
                 "-"
             ),
             namespace=NAMESPACE,
             image=IMAGE,
             job_script_path="/app/src/jobs/staging_to_historic/ski2/job_first_run.py",
-            spark_driver_cores=2,
+            spark_driver_cores=1,
             spark_driver_memory_gb=8,
-            spark_executor_cores=4,
+            spark_executor_cores=2,
             spark_executor_memory_gb=8,
             spark_executor_instances=2,
         )
 
-        run_test_job = JobOperator(job=test_job, task_id=f"run-test-spark-job-thomas-{job}")
+        run_test_job = JobOperator(job=test_job, task_id=f"run-ski2-sta-to-his-spark-job-thomas-{job}")
 
         watch_test_job: BaseOperator = JobSensor(
             job_name=test_job.metadata.name,
-            task_id=f"watch-test-spark-job-{job}",
+            task_id=f"watch-ski2-sta-to-his-spark-job-{job}",
             namespace=NAMESPACE,
         )
-        slack_at_start >> start >> run_test_job >> watch_test_job
+
+        start >> run_test_job >> watch_test_job

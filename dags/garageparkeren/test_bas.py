@@ -41,24 +41,14 @@ with DAG(
 
     start = DummyOperator(task_id="start", dag=dag)
 
-    # SparkJob(
-    #     job="ski3-int-to-datamart-opbrengst",
-    #     spark_driver_memory_gb=2,
-    #     spark_executor_memory_gb=8,
-    #     spark_executor_instances=2,
-    #     python_path="/app/src/jobs/integration_to_datamart/opbrengst.py",
-    #     spark_executor_cores=1,
-    #     source_system="ski3",
-    # ),
-
     for job in range(1):
         test_job = generate_job(
             job_name=f"bas-spark-job-{job}-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip(
                 "-"
             ),
             namespace=NAMESPACE,
-            image=IMAGE,
-            job_script_path="/app/src/util/test_bas.py",
+            image="parkerenweuacrow77kin67.azurecr.io/parkeren-spark:bas",
+            job_script_path="/app/src/jobs/......",
             spark_driver_cores=1,
             spark_driver_memory_gb=1,
             spark_executor_cores=2,

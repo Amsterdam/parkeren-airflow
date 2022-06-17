@@ -61,7 +61,7 @@ with DAG(
 
         watch_test_job: BaseOperator = JobSensor(
             job_name=test_job.metadata.name,
-            task_id=f"watch-test-spark-job-{job}",
+            task_id=f"watch-test-spark-job-bas-{job}",
             namespace=NAMESPACE,
         )
         start >> run_test_job >> watch_test_job

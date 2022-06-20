@@ -47,7 +47,7 @@ with DAG(
                 "-"
             ),
             namespace=NAMESPACE,
-            image="parkerenweuacrow77kin67.azurecr.io/parkeren-spark:bas",
+            image="parkerenweuacrow77kin67.azurecr.io/parkeren-spark:latest",
             job_script_path="/app/src/jobs/staging_to_historic/ipp1/job.py",
             spark_driver_cores=1,
             spark_driver_memory_gb=1,

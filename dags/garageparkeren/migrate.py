@@ -44,8 +44,8 @@ with DAG(
         "ipp2",
         "scn1",
         "ski1",
-        # "ski2",
-        # "ski3",
+        "ski2",
+        "ski3",
         "snb1"
     ]
 

@@ -44,30 +44,30 @@ with DAG(
     start = DummyOperator(task_id="start", dag=dag)
 
     to_integration_jobs = [
-        SparkJob(
-            job="ski1-his-to-int-betaalregel",
-            spark_driver_memory_gb=4,
-            spark_executor_memory_gb=8,
-            spark_executor_instances=2,
-            python_path="/app/src/jobs/historic_to_integration/ski1/betaalregel.py",
-            spark_executor_cores=1,
-        ),
-        SparkJob(
-            job="ski1-his-to-int-parkeerbeweging",
-            spark_driver_memory_gb=4,
-            spark_executor_memory_gb=8,
-            spark_executor_instances=2,
-            python_path="/app/src/jobs/historic_to_integration/ski1/parkeerbeweging.py",
-            spark_executor_cores=1,
-        ),
-        SparkJob(
-            job="ski1-his-to-int-telling",
-            spark_driver_memory_gb=1,
-            spark_executor_memory_gb=1,
-            spark_executor_instances=1,
-            python_path="/app/src/jobs/historic_to_integration/ski1/telling.py",
-            spark_executor_cores=1,
-        ),
+        # SparkJob(
+        #     job="ski1-his-to-int-betaalregel",
+        #     spark_driver_memory_gb=4,
+        #     spark_executor_memory_gb=8,
+        #     spark_executor_instances=2,
+        #     python_path="/app/src/jobs/historic_to_integration/ski1/betaalregel.py",
+        #     spark_executor_cores=1,
+        # ),
+        # SparkJob(
+        #     job="ski1-his-to-int-parkeerbeweging",
+        #     spark_driver_memory_gb=4,
+        #     spark_executor_memory_gb=8,
+        #     spark_executor_instances=2,
+        #     python_path="/app/src/jobs/historic_to_integration/ski1/parkeerbeweging.py",
+        #     spark_executor_cores=1,
+        # ),
+        # SparkJob(
+        #     job="ski1-his-to-int-telling",
+        #     spark_driver_memory_gb=1,
+        #     spark_executor_memory_gb=1,
+        #     spark_executor_instances=1,
+        #     python_path="/app/src/jobs/historic_to_integration/ski1/telling.py",
+        #     spark_executor_cores=1,
+        # ),
         SparkJob(
             job="ski1-his-to-int-transactieafrekening",
             spark_driver_memory_gb=4,

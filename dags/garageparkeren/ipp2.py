@@ -73,7 +73,7 @@ with DAG(
         SparkJob(
             job="ipp2-his-to-int-betaalregel",
             spark_driver_memory_gb=2,
-            spark_executor_memory_gb=8,
+            spark_executor_memory_gb=4,
             spark_executor_instances=2,
             python_path="/app/src/jobs/historic_to_integration/ipp2/betaalregel.py",
             spark_executor_cores=1,
@@ -81,7 +81,7 @@ with DAG(
         SparkJob(
             job="ipp2-his-to-int-parkeerbeweging",
             spark_driver_memory_gb=2,
-            spark_executor_memory_gb=8,
+            spark_executor_memory_gb=4,
             spark_executor_instances=2,
             python_path="/app/src/jobs/historic_to_integration/ipp2/parkeerbeweging.py",
             spark_executor_cores=1,
@@ -89,7 +89,7 @@ with DAG(
         SparkJob(
             job="ipp2-his-to-int-transactieafrekening",
             spark_driver_memory_gb=2,
-            spark_executor_memory_gb=8,
+            spark_executor_memory_gb=4,
             spark_executor_instances=2,
             python_path="/app/src/jobs/historic_to_integration/ipp2/transactieafrekening.py",
             spark_executor_cores=1,
@@ -108,7 +108,7 @@ with DAG(
         SparkJob(
             job="ipp2-int-to-datamart-bezetting",
             spark_driver_memory_gb=2,
-            spark_executor_memory_gb=8,
+            spark_executor_memory_gb=4,
             spark_executor_instances=2,
             python_path="/app/src/jobs/integration_to_datamart/bezetting.py",
             spark_executor_cores=2,
@@ -117,7 +117,7 @@ with DAG(
         SparkJob(
             job="ipp2-int-to-datamart-opbrengst",
             spark_driver_memory_gb=2,
-            spark_executor_memory_gb=8,
+            spark_executor_memory_gb=4,
             spark_executor_instances=2,
             python_path="/app/src/jobs/integration_to_datamart/opbrengst.py",
             spark_executor_cores=1,
@@ -126,7 +126,7 @@ with DAG(
         SparkJob(
             job="ipp2-int-to-datamart-parkeerduur",
             spark_driver_memory_gb=2,
-            spark_executor_memory_gb=8,
+            spark_executor_memory_gb=4,
             spark_executor_instances=2,
             python_path="/app/src/jobs/integration_to_datamart/parkeerduur.py",
             spark_executor_cores=1,

@@ -44,28 +44,28 @@ with DAG(
     start = DummyOperator(task_id="start", dag=dag)
 
     # To historic
-    # staging_to_his = generate_job(
-    #     f"snb1-sta-to-his-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip("-"),
-    #     NAMESPACE,
-    #     IMAGE,
-    #     "/app/src/jobs/staging_to_historic/snb1/job.py",
-    #     spark_driver_cores=2,
-    #     spark_driver_memory_gb=4,
-    #     spark_executor_cores=2,
-    #     spark_executor_memory_gb=4,
-    #     spark_executor_instances=2,
-    # )
-    #
-    # run_staging_to_his = JobOperator(job=staging_to_his, task_id="run-snb1-sta-to-his")
-    #
-    # watch_staging_to_his: BaseOperator = JobSensor(
-    #     job_name=staging_to_his.metadata.name,
-    #     task_id="watch-snb1-sta-to-his",
-    #     namespace=NAMESPACE,
-    #     poke_interval=60 + job_sensor_poke_jitter(),
-    # )
-    #
-    # start >> run_staging_to_his >> watch_staging_to_his
+    staging_to_his = generate_job(
+        f"snb1-sta-to-his-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip("-"),
+        NAMESPACE,
+        IMAGE,
+        "/app/src/jobs/staging_to_historic/snb1/job.py",
+        spark_driver_cores=2,
+        spark_driver_memory_gb=4,
+        spark_executor_cores=2,
+        spark_executor_memory_gb=4,
+        spark_executor_instances=2,
+    )
+
+    run_staging_to_his = JobOperator(job=staging_to_his, task_id="run-snb1-sta-to-his")
+
+    watch_staging_to_his: BaseOperator = JobSensor(
+        job_name=staging_to_his.metadata.name,
+        task_id="watch-snb1-sta-to-his",
+        namespace=NAMESPACE,
+        poke_interval=60 + job_sensor_poke_jitter(),
+    )
+
+    start >> run_staging_to_his >> watch_staging_to_his
 
     # 9 cores 25 mem
     to_integration_jobs = [

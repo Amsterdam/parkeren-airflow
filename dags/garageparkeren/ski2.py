@@ -132,7 +132,7 @@ with DAG(
 
     for to_integration_job in to_integration_jobs:
         add_job_to_node(
-            end_to_int, to_integration_job, timestamp_str, end_to_int
+            watch_staging_to_his, to_integration_job, timestamp_str, end_to_int
         )
 
     # 8 cores 48 mem

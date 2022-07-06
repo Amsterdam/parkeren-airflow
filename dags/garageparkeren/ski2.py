@@ -44,28 +44,28 @@ with DAG(
     start = DummyOperator(task_id="start", dag=dag)
 
     # To historic
-    # staging_to_his = generate_job(
-    #     f"ski2-sta-to-his-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip("-"),
-    #     NAMESPACE,
-    #     IMAGE,
-    #     "/app/src/jobs/staging_to_historic/ski2/job.py",
-    #     spark_driver_cores=2,
-    #     spark_driver_memory_gb=8,
-    #     spark_executor_cores=4,
-    #     spark_executor_memory_gb=8,
-    #     spark_executor_instances=2,
-    # )
-    #
-    # run_staging_to_his = JobOperator(job=staging_to_his, task_id="run-ski2-sta-to-his")
-    #
-    # watch_staging_to_his: BaseOperator = JobSensor(
-    #     job_name=staging_to_his.metadata.name,
-    #     task_id="watch-ski2-sta-to-his",
-    #     namespace=NAMESPACE,
-    #     poke_interval=60 + job_sensor_poke_jitter(),
-    # )
-    #
-    # start >> run_staging_to_his >> watch_staging_to_his
+    staging_to_his = generate_job(
+        f"ski2-sta-to-his-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip("-"),
+        NAMESPACE,
+        IMAGE,
+        "/app/src/jobs/staging_to_historic/ski2/job.py",
+        spark_driver_cores=2,
+        spark_driver_memory_gb=8,
+        spark_executor_cores=4,
+        spark_executor_memory_gb=8,
+        spark_executor_instances=2,
+    )
+
+    run_staging_to_his = JobOperator(job=staging_to_his, task_id="run-ski2-sta-to-his")
+
+    watch_staging_to_his: BaseOperator = JobSensor(
+        job_name=staging_to_his.metadata.name,
+        task_id="watch-ski2-sta-to-his",
+        namespace=NAMESPACE,
+        poke_interval=60 + job_sensor_poke_jitter(),
+    )
+
+    start >> run_staging_to_his >> watch_staging_to_his
 
     # staging_to_archive = generate_job(
     #     job_name=f"ski2-sta-to-arch-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip("-"),
@@ -132,7 +132,7 @@ with DAG(
 
     for to_integration_job in to_integration_jobs:
         add_job_to_node(
-            start, to_integration_job, timestamp_str, end_to_int
+            end_to_int, to_integration_job, timestamp_str, end_to_int
         )
 
     # 8 cores 48 mem

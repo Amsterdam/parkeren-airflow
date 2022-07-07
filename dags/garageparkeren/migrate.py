@@ -41,9 +41,9 @@ with DAG(
 
     source_systems_jobs = [
         "ipp1",
-        # "ipp2",
+        "ipp2",
         "scn1",
-        # "ski1",
+        "ski1",
         "ski2",
         "ski3",
         "snb1"

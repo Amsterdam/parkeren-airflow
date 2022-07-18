@@ -318,8 +318,15 @@ with DAG(
 
     start_time = datetime.now()
     timestamp_str = start_time.strftime("%Y%m%d")
-    start: BaseOperator = DummyOperator(task_id="start", dag=dag)
-    end: BaseOperator = DummyOperator(task_id="end", dag=dag)
+
+    start_stage_one: BaseOperator = DummyOperator(task_id="start_stage_one", dag=dag)
+    end_stage_one: BaseOperator = DummyOperator(task_id="end_stage_one", dag=dag)
 
     for source_system_job_stage_one in source_systems_jobs_stage_one:
-        generate_stage(source_system_job_stage_one, start, end, timestamp_str)
+        generate_stage(source_system_job_stage_one, start_stage_one, end_stage_one, timestamp_str)
+
+    start_stage_two: BaseOperator = DummyOperator(task_id="start_stage_two", dag=dag)
+    end_stage_two: BaseOperator = DummyOperator(task_id="end_stage_two", dag=dag)
+
+    for source_system_job_stage_two in source_systems_jobs_stage_two:
+        generate_stage(source_system_job_stage_two, start_stage_two, end_stage_two, timestamp_str)

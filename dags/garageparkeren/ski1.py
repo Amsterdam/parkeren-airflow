@@ -41,49 +41,49 @@ with DAG(
     start = datetime.now()
     timestamp_str = start.strftime("%Y%m%d%H")
 
-    # start = DummyOperator(task_id="start", dag=dag)
+    start = DummyOperator(task_id="start", dag=dag)
 
     to_integration_jobs = [
-        # SparkJob(
-        #     job="ski1-his-to-int-betaalregel",
-        #     spark_driver_memory_gb=4,
-        #     spark_executor_memory_gb=8,
-        #     spark_executor_instances=2,
-        #     python_path="/app/src/jobs/historic_to_integration/ski1/betaalregel.py",
-        #     spark_executor_cores=1,
-        # ),
-        # SparkJob(
-        #     job="ski1-his-to-int-parkeerbeweging",
-        #     spark_driver_memory_gb=4,
-        #     spark_executor_memory_gb=8,
-        #     spark_executor_instances=2,
-        #     python_path="/app/src/jobs/historic_to_integration/ski1/parkeerbeweging.py",
-        #     spark_executor_cores=1,
-        # ),
-        # SparkJob(
-        #     job="ski1-his-to-int-telling",
-        #     spark_driver_memory_gb=1,
-        #     spark_executor_memory_gb=1,
-        #     spark_executor_instances=1,
-        #     python_path="/app/src/jobs/historic_to_integration/ski1/telling.py",
-        #     spark_executor_cores=1,
-        # ),
-        # SparkJob(
-        #     job="ski1-his-to-int-transactieafrekening",
-        #     spark_driver_memory_gb=4,
-        #     spark_executor_memory_gb=8,
-        #     spark_executor_instances=1,
-        #     python_path="/app/src/jobs/historic_to_integration/ski1/transactieafrekening.py",
-        #     spark_executor_cores=1,
-        # ),
+        SparkJob(
+            job="ski1-his-to-int-betaalregel",
+            spark_driver_memory_gb=4,
+            spark_executor_memory_gb=8,
+            spark_executor_instances=2,
+            python_path="/app/src/jobs/historic_to_integration/ski1/betaalregel.py",
+            spark_executor_cores=1,
+        ),
+        SparkJob(
+            job="ski1-his-to-int-parkeerbeweging",
+            spark_driver_memory_gb=4,
+            spark_executor_memory_gb=8,
+            spark_executor_instances=2,
+            python_path="/app/src/jobs/historic_to_integration/ski1/parkeerbeweging.py",
+            spark_executor_cores=1,
+        ),
+        SparkJob(
+            job="ski1-his-to-int-telling",
+            spark_driver_memory_gb=1,
+            spark_executor_memory_gb=1,
+            spark_executor_instances=1,
+            python_path="/app/src/jobs/historic_to_integration/ski1/telling.py",
+            spark_executor_cores=1,
+        ),
+        SparkJob(
+            job="ski1-his-to-int-transactieafrekening",
+            spark_driver_memory_gb=4,
+            spark_executor_memory_gb=8,
+            spark_executor_instances=1,
+            python_path="/app/src/jobs/historic_to_integration/ski1/transactieafrekening.py",
+            spark_executor_cores=1,
+        ),
     ]
 
     end_to_int = DummyOperator(task_id="end_to_int", dag=dag)
 
-    # for to_integration_job in to_integration_jobs:
-    #     add_job_to_node(
-    #         start, to_integration_job, timestamp_str, end_to_int
-    #     )
+    for to_integration_job in to_integration_jobs:
+        add_job_to_node(
+            start, to_integration_job, timestamp_str, end_to_int
+        )
 
     # 8 cores 48 mem
     to_datamart_jobs = [
@@ -96,24 +96,24 @@ with DAG(
             spark_executor_cores=2,
             arguments=["ski1"],
         ),
-        # SparkJob(
-        #     job="ski1-int-to-datamart-opbrengst",
-        #     spark_driver_memory_gb=4,
-        #     spark_executor_memory_gb=8,
-        #     spark_executor_instances=2,
-        #     python_path="/app/src/jobs/integration_to_datamart/opbrengst.py",
-        #     spark_executor_cores=1,
-        #     arguments=["ski1"],
-        # ),
-        # SparkJob(
-        #     job="ski1-int-to-datamart-parkeerduur",
-        #     spark_driver_memory_gb=4,
-        #     spark_executor_memory_gb=8,
-        #     spark_executor_instances=2,
-        #     python_path="/app/src/jobs/integration_to_datamart/parkeerduur.py",
-        #     spark_executor_cores=1,
-        #     arguments=["ski1"],
-        # ),
+        SparkJob(
+            job="ski1-int-to-datamart-opbrengst",
+            spark_driver_memory_gb=4,
+            spark_executor_memory_gb=8,
+            spark_executor_instances=2,
+            python_path="/app/src/jobs/integration_to_datamart/opbrengst.py",
+            spark_executor_cores=1,
+            arguments=["ski1"],
+        ),
+        SparkJob(
+            job="ski1-int-to-datamart-parkeerduur",
+            spark_driver_memory_gb=4,
+            spark_executor_memory_gb=8,
+            spark_executor_instances=2,
+            python_path="/app/src/jobs/integration_to_datamart/parkeerduur.py",
+            spark_executor_cores=1,
+            arguments=["ski1"],
+        ),
     ]
 
     end_to_datamart = DummyOperator(task_id="end_to_datamart", dag=dag)

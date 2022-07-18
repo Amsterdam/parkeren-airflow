@@ -25,7 +25,57 @@ ARGS = {
 DAG_ID = "garageparkeren-migrate"
 
 INTERVAL = None
-# INTERVAL = timedelta(hours=1)
+
+
+def generate_stage(source_system: str, start: BaseOperator, end: BaseOperator, timestamp_str: str):
+    migrate_job = generate_job(
+        job_name=f"migrate-spark-job-{source_system}-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip(
+            "-"
+        ),
+        namespace=NAMESPACE,
+        image=IMAGE,
+        job_script_path=f"/app/src/jobs/migration/{source_system}/migrate.py",
+        spark_driver_cores=1,
+        spark_driver_memory_gb=8,
+        spark_executor_cores=2,
+        spark_executor_memory_gb=8,
+        spark_executor_instances=2,
+        arguments=arguments[source_system]
+    )
+
+    run_migrate_job = JobOperator(job=migrate_job, task_id=f"run-migrate-spark-job-{source_system}")
+
+    watch_migrate_job: BaseOperator = JobSensor(
+        job_name=migrate_job.metadata.name,
+        task_id=f"watch-migrate-spark-job-{source_system}",
+        namespace=NAMESPACE,
+    )
+
+    staging_job = generate_job(
+        job_name=f"sta-to-his-spark-job-{source_system}-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip(
+            "-"
+        ),
+        namespace=NAMESPACE,
+        image=IMAGE,
+        job_script_path=f"/app/src/jobs/staging_to_historic/{source_system}/job.py",
+        spark_driver_cores=1,
+        spark_driver_memory_gb=8,
+        spark_executor_cores=2,
+        spark_executor_memory_gb=8,
+        spark_executor_instances=2,
+        arguments=arguments[source_system]
+    )
+
+    run_staging_job = JobOperator(job=staging_job, task_id=f"run-sta-to-his-spark-job-{source_system}")
+
+    watch_staging_job: BaseOperator = JobSensor(
+        job_name=staging_job.metadata.name,
+        task_id=f"watch-sta-to-his-spark-job-{source_system}",
+        namespace=NAMESPACE,
+    )
+
+    start >> run_migrate_job >> watch_migrate_job >> run_staging_job >> watch_staging_job >> end
+
 
 with DAG(
     DAG_ID,
@@ -34,19 +84,25 @@ with DAG(
     catchup=False,
     max_active_runs=1,
 ) as dag:
-    start = datetime.now()
-    timestamp_str = start.strftime("%Y%m%d")
 
-    start = DummyOperator(task_id="start", dag=dag)
-
-    source_systems_jobs = [
+    source_systems_jobs_stage_one = [
+        "snb1"
         "ipp1",
-        # "ipp2",
+        "ipp2",
         "scn1",
         # "ski1",
+        # "ski2",
+        # "ski3",
+    ]
+
+    source_systems_jobs_stage_two = [
+        # "snb1"
+        # "ipp1",
+        # "ipp2",
+        # "scn1",
+        "ski1",
         "ski2",
         "ski3",
-        "snb1"
     ]
 
     arguments = {
@@ -260,28 +316,10 @@ with DAG(
             "TSHIFT",
         ]
     }
+    start_time = datetime.now()
+    timestamp_str = start_time.strftime("%Y%m%d")
+    start: BaseOperator = DummyOperator(task_id="start", dag=dag)
+    end: BaseOperator = DummyOperator(task_id="end", dag=dag)
 
-    for source_system_job in source_systems_jobs:
-        test_job = generate_job(
-            job_name=f"migrate-spark-job-{source_system_job}-{timestamp_str}"[:MAX_JOB_NAME_LENGTH].rstrip(
-                "-"
-            ),
-            namespace=NAMESPACE,
-            image=IMAGE,
-            job_script_path=f"/app/src/jobs/migration/{source_system_job}/migrate.py",
-            spark_driver_cores=1,
-            spark_driver_memory_gb=8,
-            spark_executor_cores=2,
-            spark_executor_memory_gb=8,
-            spark_executor_instances=2,
-            arguments=arguments[source_system_job]
-        )
-
-        run_test_job = JobOperator(job=test_job, task_id=f"run-migrate-spark-job-{source_system_job}")
-
-        watch_test_job: BaseOperator = JobSensor(
-            job_name=test_job.metadata.name,
-            task_id=f"watch-migrate-spark-job-{source_system_job}",
-            namespace=NAMESPACE,
-        )
-        start >> run_test_job >> watch_test_job
+    for source_system_job_stage_one in source_systems_jobs_stage_one:
+        generate_stage(source_system_job_stage_one, start, end, timestamp_str)

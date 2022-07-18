@@ -27,7 +27,7 @@ DAG_ID = "garageparkeren-migrate"
 INTERVAL = None
 
 source_systems_jobs_stage_one = [
-    "snb1"
+    "snb1",
     "ipp1",
     "ipp2",
     # "ski1",

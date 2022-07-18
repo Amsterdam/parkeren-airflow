@@ -27,11 +27,11 @@ DAG_ID = "garageparkeren-migrate"
 INTERVAL = None
 
 source_systems_jobs_stage_one = [
-    "snb1",
-    "ipp1",
-    "ipp2",
+    # "snb1",
+    # "ipp1",
+    # "ipp2",
     # "ski1",
-    # "ski2",
+    "ski2",
     # "ski3",
     # "scn1",
 ]
@@ -42,8 +42,8 @@ source_systems_jobs_stage_two = [
     # "ipp2",
     # "ski1",
     # "ski2",
-    "ski3",
-    "scn1",
+    # "ski3",
+    # "scn1",
 ]
 
 arguments = {
@@ -288,7 +288,7 @@ def generate_stage(source_system: str, start: BaseOperator, end: BaseOperator, t
         ),
         namespace=NAMESPACE,
         image=IMAGE,
-        job_script_path=f"/app/src/jobs/staging_to_historic/{source_system}/job.py",
+        job_script_path=f"/app/src/jobs/staging_to_historic/{source_system}/job_first_run.py",
         spark_driver_cores=1,
         spark_driver_memory_gb=8,
         spark_executor_cores=2,
@@ -325,7 +325,7 @@ with DAG(
     for source_system_job_stage_one in source_systems_jobs_stage_one:
         generate_stage(source_system_job_stage_one, start_stage_one, end_stage_one, timestamp_str)
 
-    end_stage_two: BaseOperator = DummyOperator(task_id="end_stage_two", dag=dag)
-
-    for source_system_job_stage_two in source_systems_jobs_stage_two:
-        generate_stage(source_system_job_stage_two, end_stage_one, end_stage_two, timestamp_str)
+    # end_stage_two: BaseOperator = DummyOperator(task_id="end_stage_two", dag=dag)
+    #
+    # for source_system_job_stage_two in source_systems_jobs_stage_two:
+    #     generate_stage(source_system_job_stage_two, end_stage_one, end_stage_two, timestamp_str)

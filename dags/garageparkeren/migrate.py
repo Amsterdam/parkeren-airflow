@@ -89,20 +89,20 @@ with DAG(
         "snb1"
         "ipp1",
         "ipp2",
-        "scn1",
         # "ski1",
         # "ski2",
         # "ski3",
+        # "scn1",
     ]
 
     source_systems_jobs_stage_two = [
         # "snb1"
         # "ipp1",
         # "ipp2",
-        # "scn1",
-        "ski1",
-        "ski2",
+        # "ski1",
+        # "ski2",
         "ski3",
+        "scn1",
     ]
 
     arguments = {

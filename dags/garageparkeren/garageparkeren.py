@@ -39,6 +39,12 @@ with DAG(
         dag=dag,
     )
 
+    run_ipp2_staging_to_datamart = TriggerDagRunOperator(
+        trigger_dag_id="garageparkeren-ipp2",
+        task_id="run-ipp2-staging-to-datamart",
+        dag=dag,
+    )
+
     run_scn1_staging_to_datamart = TriggerDagRunOperator(
         trigger_dag_id="garageparkeren-scn1",
         task_id="run-scn1-staging-to-datamart",
@@ -67,6 +73,12 @@ with DAG(
         dag=dag,
         task_id="watch-ipp1-staging-to-datamart",
         external_dag_id="garageparkeren-ipp1",
+    )
+
+    check_ipp2_staging_to_datamart = DagSensor(
+        dag=dag,
+        task_id="watch-ipp2-staging-to-datamart",
+        external_dag_id="garageparkeren-ipp2",
     )
 
     check_scn1_staging_to_datamart = DagSensor(
@@ -109,6 +121,12 @@ with DAG(
         start_staging_to_datamart
         >> run_ipp1_staging_to_datamart
         >> check_ipp1_staging_to_datamart
+        >> end_staging_to_datamart
+    )
+    (
+        start_staging_to_datamart
+        >> run_ipp2_staging_to_datamart
+        >> check_ipp2_staging_to_datamart
         >> end_staging_to_datamart
     )
     (

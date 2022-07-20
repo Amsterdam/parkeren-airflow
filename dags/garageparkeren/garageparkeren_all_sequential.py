@@ -18,11 +18,12 @@ ARGS = {
     "retries": 0,
     "retry_delay": timedelta(minutes=15),
 }
+INTERVAL = None
 
 with DAG(
     DAG_ID,
     default_args=ARGS,
-    schedule_interval=RUN_ALL_INTERVAL,
+    schedule_interval="1 11 * * *",
     catchup=False,
     max_active_runs=1,
 ) as dag:

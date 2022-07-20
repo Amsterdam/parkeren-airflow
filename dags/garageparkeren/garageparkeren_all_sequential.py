@@ -6,7 +6,7 @@ from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.operators.dummy import DummyOperator
 from dags.garageparkeren.common import OWNER, RUN_ALL_INTERVAL
 
-DAG_ID = "garageparkeren-all"
+DAG_ID = "garageparkeren-all-sequential"
 
 ARGS = {
     "owner": OWNER,

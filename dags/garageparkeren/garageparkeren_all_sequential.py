@@ -31,7 +31,6 @@ with DAG(
         task_id="start_stage_one", dag=dag
     )
     start_stage_two = DummyOperator(task_id="start_stage_two", dag=dag)
-    start_stage_three = DummyOperator(task_id="start_stage_three", dag=dag)
     start_to_csv = DummyOperator(task_id="start_to_csv", dag=dag)
 
 
@@ -132,25 +131,25 @@ with DAG(
             >> start_stage_two
     )
     (
-            start_stage_two
+            start_stage_one
             >> run_snb1_staging_to_datamart
             >> check_snb1_staging_to_datamart
-            >> start_stage_three
+            >> start_stage_two
     )
     (
             start_stage_two
             >> run_ski2_staging_to_datamart
             >> check_ski2_staging_to_datamart
-            >> start_stage_three
+            >> start_to_csv
     )
     (
-            start_stage_three
+            start_stage_two
             >> run_ski3_staging_to_datamart
             >> check_ski3_staging_to_datamart
             >> start_to_csv
     )
     (
-            start_stage_three
+            start_stage_two
             >> run_scn1_staging_to_datamart
             >> check_scn1_staging_to_datamart
             >> start_to_csv

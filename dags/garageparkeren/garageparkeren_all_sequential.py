@@ -23,7 +23,7 @@ INTERVAL = None
 with DAG(
     DAG_ID,
     default_args=ARGS,
-    schedule_interval="1 11 * * *",
+    schedule_interval="1 4 * * *",
     catchup=False,
     max_active_runs=1,
 ) as dag:

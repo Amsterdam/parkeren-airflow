@@ -49,10 +49,10 @@ with DAG(
         NAMESPACE,
         IMAGE,
         "/app/src/jobs/staging_to_historic/ski3/job.py",
-        spark_driver_cores=2,
-        spark_driver_memory_gb=8,
-        spark_executor_cores=2,
-        spark_executor_memory_gb=4,
+        spark_driver_cores=1,
+        spark_driver_memory_gb=2,
+        spark_executor_cores=1,
+        spark_executor_memory_gb=2,
         spark_executor_instances=2,
     )
 
@@ -97,7 +97,7 @@ with DAG(
         SparkJob(
             job="ski3-his-to-int-betaalregel",
             spark_driver_memory_gb=2,
-            spark_executor_memory_gb=8,
+            spark_executor_memory_gb=2,
             spark_executor_instances=2,
             python_path="/app/src/jobs/historic_to_integration/ski3/betaalregel.py",
             spark_executor_cores=1,
@@ -105,7 +105,7 @@ with DAG(
         SparkJob(
             job="ski3-his-to-int-parkeerbeweging",
             spark_driver_memory_gb=2,
-            spark_executor_memory_gb=8,
+            spark_executor_memory_gb=2,
             spark_executor_instances=2,
             python_path="/app/src/jobs/historic_to_integration/ski3/parkeerbeweging.py",
             spark_executor_cores=1,
@@ -121,7 +121,7 @@ with DAG(
         SparkJob(
             job="ski3-his-to-int-transactieafrekening",
             spark_driver_memory_gb=1,
-            spark_executor_memory_gb=4,
+            spark_executor_memory_gb=2,
             spark_executor_instances=2,
             python_path="/app/src/jobs/historic_to_integration/ski3/transactieafrekening.py",
             spark_executor_cores=1,
@@ -140,16 +140,16 @@ with DAG(
         SparkJob(
             job="ski3-int-to-datamart-bezetting",
             spark_driver_memory_gb=2,
-            spark_executor_memory_gb=8,
+            spark_executor_memory_gb=2,
             spark_executor_instances=2,
             python_path="/app/src/jobs/integration_to_datamart/bezetting.py",
-            spark_executor_cores=2,
+            spark_executor_cores=1,
             arguments=["ski3"],
         ),
         SparkJob(
             job="ski3-int-to-datamart-opbrengst",
             spark_driver_memory_gb=2,
-            spark_executor_memory_gb=8,
+            spark_executor_memory_gb=2,
             spark_executor_instances=2,
             python_path="/app/src/jobs/integration_to_datamart/opbrengst.py",
             spark_executor_cores=1,
@@ -158,7 +158,7 @@ with DAG(
         SparkJob(
             job="ski3-int-to-datamart-parkeerduur",
             spark_driver_memory_gb=2,
-            spark_executor_memory_gb=8,
+            spark_executor_memory_gb=2,
             spark_executor_instances=2,
             python_path="/app/src/jobs/integration_to_datamart/parkeerduur.py",
             spark_executor_cores=1,

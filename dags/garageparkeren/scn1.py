@@ -63,16 +63,16 @@ with DAG(
     to_integration_jobs = [
         SparkJob(
             job="scn1-his-to-int-opbrengsten",
-            spark_driver_memory_gb=4,
-            spark_executor_memory_gb=8,
+            spark_driver_memory_gb=2,
+            spark_executor_memory_gb=2,
             spark_executor_instances=2,
             python_path="/app/src/jobs/historic_to_integration/scn1/opbrengsten.py",
             spark_executor_cores=1,
         ),
         SparkJob(
             job="scn1-his-to-int-transacties",
-            spark_driver_memory_gb=4,
-            spark_executor_memory_gb=8,
+            spark_driver_memory_gb=2,
+            spark_executor_memory_gb=2,
             spark_executor_instances=2,
             python_path="/app/src/jobs/historic_to_integration/scn1/transacties.py",
             spark_executor_cores=1,

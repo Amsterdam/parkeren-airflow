@@ -23,7 +23,7 @@ ARGS = {
     "retry_delay": timedelta(minutes=15),
 }
 
-DAG_ID = "garageparkeren-eps-scan1"
+DAG_ID = "straatparkeren-eps-scan1"
 
 INTERVAL = None
 
